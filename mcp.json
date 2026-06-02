@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "tolstoy-studio": {
+      "type": "streamable-http",
+      "url": "https://apilb.gotolstoy.com/mcp/v1/mcp"
+    },
+    "tolstoy-library": {
+      "type": "streamable-http",
+      "url": "https://apilb.gotolstoy.com/mcp/v1/library/mcp"
+    }
+  }
+}
