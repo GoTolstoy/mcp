@@ -1,0 +1,52 @@
+name: MCP capability audit
+
+on:
+  pull_request:
+    paths:
+      - README.md
+      - mcp.json
+      - registry/**
+      - audit/**
+      - .github/workflows/mcp-capability-audit.yml
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - mcp.json
+      - registry/**
+      - audit/**
+      - .github/workflows/mcp-capability-audit.yml
+
+jobs:
+  capability-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Tolstoy Audit Kit
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "tolstoy-audit-kit @ git+https://x-access-token:${{ secrets.TOLSTOY_AUDIT_KIT_TOKEN }}@github.com/GoTolstoy/tolstoy-audit-kit.git@main"
+
+      - name: Run MCP capability audit
+        run: |
+          tolstoy-audit run mcp-capability \
+            --source readme=README.md \
+            --source mcp-config=mcp.json \
+            --source registry-studio=registry/studio.server.json \
+            --source registry-library=registry/library.server.json \
+            --tools-json audit/tolstoy-mcp-tools.json \
+            --coverage-note "CI scans public MCP repo copy only; live Settings -> MCP page copy remains manual/on-demand." \
+            --out reports/mcp-capability.md \
+            --fail-on fail
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mcp-capability-audit
+          path: reports/mcp-capability.md
