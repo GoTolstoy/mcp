@@ -2,7 +2,7 @@
 
 This repo runs the Tolstoy MCP capability audit on README and registry copy.
 
-The audit is provided by the private `GoTolstoy/tolstoy-audit-kit` repo. Configure the `TOLSTOY_AUDIT_KIT_TOKEN` GitHub Actions secret with read-only access to that private repo before enabling the workflow.
+The audit is provided by the private JavaScript package in `GoTolstoy/tolstoy-audit-kit`. Configure the `TOLSTOY_AUDIT_KIT_TOKEN` GitHub Actions secret with read-only access to that private repo before enabling the workflow.
 
 It compares documented MCP claims against the currently supported Tolstoy MCP tools:
 
@@ -17,7 +17,7 @@ The CI job fails only on clear unsupported claims, such as promising widget crea
 
 ## Run Locally
 
-After installing `tolstoy-audit-kit`:
+After installing `tolstoy-audit-kit` with Node.js 20 or newer:
 
 ```bash
 tolstoy-audit run mcp-capability \

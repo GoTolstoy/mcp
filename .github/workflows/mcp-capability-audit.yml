@@ -24,14 +24,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
+          node-version: "20"
 
       - name: Install Tolstoy Audit Kit
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install "tolstoy-audit-kit @ git+https://x-access-token:${{ secrets.TOLSTOY_AUDIT_KIT_TOKEN }}@github.com/GoTolstoy/tolstoy-audit-kit.git@main"
+          npm install --global "git+https://x-access-token:${{ secrets.TOLSTOY_AUDIT_KIT_TOKEN }}@github.com/GoTolstoy/tolstoy-audit-kit.git#main"
 
       - name: Run MCP capability audit
         run: |
