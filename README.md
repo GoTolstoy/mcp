@@ -60,6 +60,22 @@ Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose,
 }
 ```
 
+### Codex CLI
+
+`codex mcp add` targets STDIO servers, so add the remote server to `~/.codex/config.toml` and run the OAuth login:
+
+```toml
+[mcp_servers.tolstoy-library]
+url = "https://apilb.gotolstoy.com/mcp/v1/library/mcp"
+
+[mcp_servers.tolstoy-studio]
+url = "https://apilb.gotolstoy.com/mcp/v1/mcp"
+```
+
+```bash
+codex mcp login tolstoy-library
+```
+
 ## Authentication
 
 OAuth 2.1 with PKCE, backed by Amazon Cognito. Discovery via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints. Each connection is bound to the Tolstoy workspace you authorize with.
