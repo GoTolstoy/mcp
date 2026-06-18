@@ -2,12 +2,13 @@
 
 Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Run your **shoppable video** workspace right from chat: generate marketing content, manage your media library, build and publish shoppable widgets, tag products, and track ad performance.
 
-Tolstoy exposes **two remote MCP servers** over Streamable HTTP, secured with OAuth 2.1 + PKCE. There are no API keys to paste — your client runs the OAuth sign-in on first connect.
+Tolstoy exposes **three remote MCP servers** over Streamable HTTP. **Studio** and **Library** are secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect. **Shopper** is a public, no-auth marketplace server.
 
 | Server | Endpoint | What it does |
 | --- | --- | --- |
 | **Tolstoy Studio** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Generate and iterate on marketing videos and images with Tolstoy Studio's AI creative director. |
 | **Tolstoy Library** | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Run your shoppable video workspace — media library, shoppable widgets (Stories, Carousel, Spotlight), product tagging, multi-store, and Meta ads. |
+| **Tolstoy Shopper** | `https://apilb.gotolstoy.com/mcp/v1/shopper/mcp` | Shop across every brand store on Tolstoy — marketplace-wide product search, full product details, and virtual try-on. Public, no sign-in. |
 
 ## Tools
 
@@ -39,12 +40,17 @@ Tolstoy exposes **two remote MCP servers** over Streamable HTTP, secured with OA
 - `get_ads_performance` — Meta ads performance: spend, ROAS, CTR, purchases — per campaign, ad set, or ad.
 - `publish_to_meta_ads_library` — push a library video or image into Meta Ads Manager, ready for ad creation (no campaign, no spend).
 
+**Shopper** (public marketplace — no auth)
+- `search_products` — search products across every brand store on Tolstoy, one marketplace-wide catalog.
+- `get_product` — full product details: description, variants, price, media, the brand's videos, and buy/cart links.
+- `try_on` — open an interactive virtual try-on of a product (participating brands); the shopper uploads a photo and sees themselves wearing the actual item.
+
 App-aware clients (ChatGPT, Claude) also get interactive views — a shoppable-widget card grid and asset previews — rendered inline in chat.
 
 ## Connect
 
 1. In your MCP client, add a custom connector / remote MCP server.
-2. Paste the Studio or Library endpoint above.
+2. Paste the Studio, Library, or Shopper endpoint above.
 3. Sign in with your Tolstoy account when prompted (OAuth).
 
 Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose, Cherry Studio, and more) is available in the Tolstoy platform under **Settings → MCP**. The Tolstoy Library is also a published **ChatGPT app** — search "Tolstoy Library" in ChatGPT and click Connect.
@@ -55,7 +61,8 @@ Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose,
 {
   "mcpServers": {
     "tolstoy-studio": { "url": "https://apilb.gotolstoy.com/mcp/v1/mcp" },
-    "tolstoy-library": { "url": "https://apilb.gotolstoy.com/mcp/v1/library/mcp" }
+    "tolstoy-library": { "url": "https://apilb.gotolstoy.com/mcp/v1/library/mcp" },
+    "tolstoy-shopper": { "url": "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp" }
   }
 }
 ```
@@ -70,6 +77,9 @@ url = "https://apilb.gotolstoy.com/mcp/v1/library/mcp"
 
 [mcp_servers.tolstoy-studio]
 url = "https://apilb.gotolstoy.com/mcp/v1/mcp"
+
+[mcp_servers.tolstoy-shopper]
+url = "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp"
 ```
 
 ```bash
@@ -78,13 +88,14 @@ codex mcp login tolstoy-library
 
 ## Authentication
 
-OAuth 2.1 with PKCE, backed by Amazon Cognito. Discovery via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints. Each connection is bound to the Tolstoy workspace you authorize with.
+OAuth 2.1 with PKCE, backed by Amazon Cognito. Discovery via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints. Each connection is bound to the Tolstoy workspace you authorize with. **Shopper** is a public marketplace server and requires no authentication.
 
 ## Registry
 
 Published in the official [MCP Registry](https://registry.modelcontextprotocol.io):
 - `io.github.GoTolstoy/studio`
 - `io.github.GoTolstoy/library`
+- `io.github.GoTolstoy/shopper`
 
 The `server.json` for each is in [`registry/`](./registry).
 
