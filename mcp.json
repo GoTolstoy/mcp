@@ -7,6 +7,10 @@
     "tolstoy-library": {
       "type": "streamable-http",
       "url": "https://apilb.gotolstoy.com/mcp/v1/library/mcp"
+    },
+    "tolstoy-shopper": {
+      "type": "streamable-http",
+      "url": "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp"
     }
   }
 }
