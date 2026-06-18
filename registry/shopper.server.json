@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.GoTolstoy/shopper",
+  "title": "Tolstoy Shopper",
+  "description": "Shop across Tolstoy's brand stores in chat — search products, view full details, and try them on virtually.",
+  "version": "1.0.0",
+  "websiteUrl": "https://platform.gotolstoy.com/settings/mcp?server=shopper",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp"
+    }
+  ]
+}
