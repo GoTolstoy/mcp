@@ -1,0 +1,29 @@
+{
+  "tools": [
+    {
+      "name": "generate_studio_content",
+      "description": "Start a new Studio generation from a prompt."
+    },
+    {
+      "name": "iterate_studio_content",
+      "description": "Continue and refine an existing Studio generation in the same session."
+    },
+    {
+      "name": "list_assets",
+      "description": "List recent library assets."
+    },
+    {
+      "name": "search_assets",
+      "description": "Search library assets by query."
+    },
+    {
+      "name": "get_asset",
+      "description": "Fetch details for a specific asset."
+    },
+    {
+      "name": "update_asset",
+      "description": "Rename an asset or toggle favorite status."
+    }
+  ]
+}
+
