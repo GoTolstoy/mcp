@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.GoTolstoy/studio",
-  "title": "Tolstoy Studio",
-  "description": "Generate marketing videos and images in chat with Tolstoy Studio's AI creative director.",
-  "version": "1.0.0",
+  "title": "Tolstoy",
+  "description": "Run your Tolstoy shoppable-video workspace from any AI client — generate and iterate on marketing images and videos with the Studio creative agent, manage your media library, build and publish shoppable widgets, browse your product catalog, tag products, and review Meta ad performance.",
+  "version": "1.1.0",
   "websiteUrl": "https://platform.gotolstoy.com/settings/mcp?server=studio",
   "remotes": [
     {
