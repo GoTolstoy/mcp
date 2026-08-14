@@ -63,7 +63,7 @@ Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose,
 
 ### Cursor Marketplace plugin
 
-This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json). Install the repository as a local plugin while developing, or install Tolstoy from the Cursor Marketplace after the listing is approved. The plugin adds both remote MCP servers; Tolstoy asks you to sign in with OAuth on first use, while Tolstoy Shopper works without sign-in.
+This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json). Install the repository as a local plugin while developing, or install Tolstoy from the Cursor Marketplace after the listing is approved. The plugin adds the OAuth-secured Tolstoy workspace server. The public Tolstoy Shopper server remains available through the endpoint and client configuration documented above.
 
 ### Example client config
 

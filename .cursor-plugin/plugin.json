@@ -2,7 +2,7 @@
   "name": "tolstoy",
   "displayName": "Tolstoy",
   "version": "1.0.0",
-  "description": "Connect Cursor to Tolstoy to create ecommerce content, manage approved media and products, build shoppable storefront experiences, and review supported ad performance.",
+  "description": "Use approved product context to create ecommerce content and build shoppable storefront experiences from Cursor in your Tolstoy workspace.",
   "author": {
     "name": "Tolstoy"
   },
