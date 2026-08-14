@@ -3,10 +3,6 @@
     "tolstoy": {
       "type": "http",
       "url": "https://apilb.gotolstoy.com/mcp/v1/mcp"
-    },
-    "tolstoy-shopper": {
-      "type": "http",
-      "url": "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp"
     }
   }
 }
