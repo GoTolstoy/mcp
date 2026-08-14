@@ -2,9 +2,16 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.GoTolstoy/studio",
   "title": "Tolstoy",
-  "description": "Run your Tolstoy shoppable-video workspace from any AI client — generate and iterate on marketing images and videos with the Studio creative agent, manage your media library, build and publish shoppable widgets, browse your product catalog, tag products, and review Meta ad performance.",
-  "version": "1.1.0",
+  "description": "Create ecommerce content and manage shoppable storefront experiences in your Tolstoy workspace.",
+  "version": "1.1.1",
   "websiteUrl": "https://platform.gotolstoy.com/settings/mcp?server=studio",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/GoTolstoy/mcp/main/assets/logo.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
   "remotes": [
     {
       "type": "streamable-http",
