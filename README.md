@@ -61,6 +61,10 @@ App-aware clients (ChatGPT, Claude) also get interactive views — a shoppable-w
 
 Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose, Cherry Studio, and more) is available in the Tolstoy platform under **Settings → MCP**.
 
+### Cursor Marketplace plugin
+
+This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json). Install the repository as a local plugin while developing, or install Tolstoy from the Cursor Marketplace after the listing is approved. The plugin adds both remote MCP servers; Tolstoy asks you to sign in with OAuth on first use, while Tolstoy Shopper works without sign-in.
+
 ### Example client config
 
 ```json
@@ -91,6 +95,13 @@ codex mcp login tolstoy
 ## Authentication
 
 OAuth 2.1 with PKCE, backed by Amazon Cognito. Discovery via RFC 9728 protected-resource metadata at the server's `/.well-known` endpoints. Each connection is bound to the Tolstoy workspace you authorize with. **Shopper** is a public marketplace server and requires no authentication.
+
+## Privacy, terms, and support
+
+- [Privacy policy](https://www.gotolstoy.com/privacy-policy)
+- [Terms of use](https://www.gotolstoy.com/terms-of-use)
+- Support: [support@gotolstoy.com](mailto:support@gotolstoy.com)
+- Security overview: [gotolstoy.com/security](https://www.gotolstoy.com/security)
 
 ## Registry
 

@@ -1,0 +1,30 @@
+{
+  "name": "tolstoy",
+  "displayName": "Tolstoy",
+  "version": "1.0.0",
+  "description": "Connect Cursor to Tolstoy to create ecommerce content, manage approved media and products, build shoppable storefront experiences, and review supported ad performance.",
+  "author": {
+    "name": "Tolstoy"
+  },
+  "homepage": "https://www.gotolstoy.com/mcp",
+  "repository": "https://github.com/GoTolstoy/mcp",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "tolstoy",
+    "ecommerce",
+    "shopify",
+    "shoppable-video",
+    "content",
+    "marketing",
+    "mcp"
+  ],
+  "category": "integrations",
+  "tags": [
+    "ecommerce",
+    "content",
+    "mcp",
+    "shopify"
+  ],
+  "mcpServers": "./.cursor-plugin/mcp.json"
+}
