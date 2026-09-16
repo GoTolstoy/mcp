@@ -7,7 +7,12 @@ Tolstoy exposes its remote MCP servers over Streamable HTTP. The main **Tolstoy*
 | Server | Endpoint | What it does |
 | --- | --- | --- |
 | **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your full shoppable-video workspace — generate and iterate on marketing videos and images, manage your media library, build and publish shoppable widgets, browse your product catalog, tag products, and review Meta ad performance. |
+| **Tolstoy Library** | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Existing media, product tags, catalog, and shoppable widgets. This scoped connection does not expose Studio generation or paid-ad tools. |
 | **Tolstoy Shopper** | `https://apilb.gotolstoy.com/mcp/v1/shopper/mcp` | Shop across every brand store on Tolstoy — marketplace-wide product search, full product details, and virtual try-on. Public, no sign-in. |
+
+## Start with one product
+
+Follow the [first-workflow guide](docs/first-workflow.md) to confirm your workspace, find existing videos for a product, and review its current shoppable placement. It includes separate Cursor and Claude Library setup paths, example prompts, and recovery steps. The Cursor plugin also includes the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md) for this workflow.
 
 ## Tools
 
