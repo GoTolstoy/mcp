@@ -14,6 +14,8 @@ Tolstoy exposes its remote MCP servers over Streamable HTTP. The main **Tolstoy*
 
 Follow the [first-workflow guide](docs/first-workflow.md) to confirm your workspace, find existing videos for a product, and review its current shoppable placement. It includes separate Cursor and Claude Library setup paths, example prompts, and recovery steps. The Cursor plugin also includes the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md) for this workflow.
 
+For reporting, missing integrations, or file-transfer problems, use the [reporting and recovery guide](docs/reporting-and-recovery.md). It explains which connection and widget IDs each reporting tool accepts, how to recover a missing Meta Ads connection, and how to upload through the browser.
+
 ## Tools
 
 The main **Tolstoy** server exposes the following tools.
@@ -48,8 +50,12 @@ The main **Tolstoy** server exposes the following tools.
 
 **Paid ads**
 - `list_ad_campaigns` — list your Meta ad campaigns with real delivery status (`effectiveStatus` truth-telling).
-- `get_ads_performance` — Meta ads performance: spend, ROAS, CTR, purchases — per campaign, ad set, or ad.
+- `get_ads_performance` — raw Meta performance, including spend, CTR, actions, and action values, per campaign, ad set, or ad. Confirm the merchant's conversion event before calculating ROAS; do not add different action types together.
 - `publish_to_meta_ads_library` — push a library video or image into Meta Ads Manager, ready for ad creation (no campaign, no spend).
+
+**AI widget reporting**
+- `list_ai_widgets` — find widgets built with the AI Widget Builder.
+- `get_ai_widget_analytics` — read one AI widget's saved metrics. It accepts a `widgetId` from `list_ai_widgets`; a storefront video widget's `publishId` from `list_widgets` does not work here.
 
 **Shopper** (separate public marketplace server — no auth)
 - `search_products` — search products across every brand store on Tolstoy, one marketplace-wide catalog.
