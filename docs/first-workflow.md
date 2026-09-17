@@ -48,3 +48,5 @@ On another day, choose the next product or a changed collection. Run the same ch
 | No inline preview | Use the preview links or open the asset in Tolstoy. A text response does not prove the client rendered the media. |
 
 For support, share the client name, store domain, tool name, time of the failure, and the error text with [support@gotolstoy.com](mailto:support@gotolstoy.com). Do not include access tokens or customer secrets.
+
+See [reporting and connection recovery](reporting-and-recovery.md) for reporting scope, Meta Ads setup, and browser uploads.
