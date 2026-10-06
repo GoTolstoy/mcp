@@ -1,8 +1,8 @@
 {
   "name": "tolstoy",
   "displayName": "Tolstoy",
-  "version": "1.0.2",
-  "description": "Use approved product context to create ecommerce content and build shoppable storefront experiences from Cursor in your Tolstoy workspace.",
+  "version": "1.1.0",
+  "description": "Create ecommerce images and videos with Tolstoy Studio from your store's products, and manage your Tolstoy media library from Cursor.",
   "author": {
     "name": "Tolstoy"
   },

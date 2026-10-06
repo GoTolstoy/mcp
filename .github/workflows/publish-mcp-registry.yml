@@ -24,5 +24,5 @@ jobs:
       - name: Publish Tolstoy Studio
         run: ./mcp-publisher publish registry/studio.server.json
 
-      - name: Publish Tolstoy Shopper
-        run: ./mcp-publisher publish registry/shopper.server.json
+      - name: Publish Tolstoy Closet
+        run: ./mcp-publisher publish registry/closet.server.json
