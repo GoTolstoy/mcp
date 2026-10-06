@@ -1,88 +1,63 @@
 # Tolstoy MCP
 
-Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Run your **shoppable video** workspace right from chat: generate marketing content, manage your media library, build and publish shoppable widgets, browse your catalog, tag products, and track ad performance.
+Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Create product images and videos with Tolstoy Studio and manage your media library right from chat.
 
-Tolstoy exposes its remote MCP servers over Streamable HTTP. The main **Tolstoy** server is secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect. **Shopper** is a separate public, no-auth marketplace server.
+Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect.
 
 | Server | Endpoint | What it does |
 | --- | --- | --- |
-| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your full shoppable-video workspace — generate and iterate on marketing videos and images, manage your media library, build and publish shoppable widgets, browse your product catalog, tag products, and review Meta ad performance. |
-| **Tolstoy Library** | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Existing media, product tags, catalog, and shoppable widgets. This scoped connection does not expose Studio generation or paid-ad tools. |
-| **Tolstoy Shopper** | `https://apilb.gotolstoy.com/mcp/v1/shopper/mcp` | Shop across every brand store on Tolstoy — marketplace-wide product search, full product details, and virtual try-on. Public, no sign-in. |
+| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — create and revise images and videos with Tolstoy Studio from your products, Tolstoy models and templates, and manage your media library. |
+| **Tolstoy Library** | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Your media library and product catalog only. This scoped connection does not expose Studio generation. |
+| **Tolstoy Closet** | `https://apilb.gotolstoy.com/mcp/v1/closet/mcp` | A shopper's private closet — save, find, and remove the clothes they own, and continue in the Shopbots app. |
 
 ## Start with one product
 
-Follow the [first-workflow guide](docs/first-workflow.md) to confirm your workspace, find existing videos for a product, and review its current shoppable placement. It includes separate Cursor and Claude Library setup paths, example prompts, and recovery steps. The Cursor plugin also includes the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md) for this workflow.
-
-For reporting, missing integrations, or file-transfer problems, use the [reporting and recovery guide](docs/reporting-and-recovery.md). It explains which connection and widget IDs each reporting tool accepts, how to recover a missing Meta Ads connection, and how to upload through the browser.
+Follow the [first-workflow guide](docs/first-workflow.md) to confirm your store, find existing media for a product, and create new content for it. The Cursor plugin also includes the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md) for this workflow.
 
 ## Tools
 
-The main **Tolstoy** server exposes the following tools.
+**Tolstoy**
 
-**Studio — content generation**
-- `generate_studio_content` — start a new Studio generation (image or video) from a prompt.
-- `iterate_studio_content` — continue and refine an existing Studio generation in the same session.
-- `get_studio_session` — check status and retrieve the finished media for a generation.
-- `list_studio_folders` — list your Studio projects and folders.
-- `list_studio_chats` — list the chats inside a Studio project or folder.
+- `run_agent` — send a request to Tolstoy Studio, which creates and revises images and videos. Pass the returned `chatId` to continue the same chat.
+- `get_agent_chat` — read a Studio chat's status and the media it produced.
+- `search_products` — find products in your store's catalog.
+- `search_media` — search your library videos and images.
+- `get_media` — read a media item's details: tagged products, creator, expiry, and source file.
+- `search_fashion_models` — find your saved Tolstoy models (people with reference images) to use in Studio.
+- `search_templates` / `get_template` — find and read Studio templates.
+- `start_media_upload` / `finish_media_upload` — upload a local file to your library from a client that can run shell commands.
+- `upload_media_from_panel` — open the Tolstoy panel and pick files to upload to your library.
+- `open_tolstoy` — open Tolstoy in the client to browse and pick items by hand.
 
-**Media library**
-- `list_assets` — list your most recent library assets (videos, images, AI drafts).
-- `search_assets` — search the library by name or creator handle.
-- `get_asset` — fetch full details for an asset, including tagged products and playlists.
-- `update_asset` — rename an asset or toggle its favorite status.
+**Tolstoy Library** — `search_products`, `search_media`, `get_media`, and `upload_media_from_panel`.
 
-**Shoppable widgets**
-- `list_widgets` — list your onsite shoppable video widgets (Stories, Carousel, Spotlight, For You Feed, Tile, Collection Grid, Bubble Feed), live or draft.
-- `get_widget` — inspect a widget: type, live status, content selection, and the actual videos it shows (per-product for PDP-mode shoppable widgets).
-- `create_widget` — create a new shoppable widget from a template, with the platform's defaults.
-- `update_widget` — rename, publish/unpublish, set PDP mode, or change a widget's content selection.
+**Tolstoy Closet**
 
-**Products & catalog**
-- `list_collections` — list the catalog collections for a connected store.
-- `search_products` — find store products by title or query.
-- `browse_products` — browse catalog products and collections for a connected store.
-- `tag_video_product` — tag (or untag) products on a video so it becomes shoppable in product-tagged playlists and PDP widgets.
+- `search_closet` — list or search the shopper's saved clothes.
+- `add_closet_items` — save clothes to the closet.
+- `remove_closet_items` — remove saved items.
+- `get_shopbots_link` — create a private link to continue in the Shopbots app.
 
-**Stores**
-- `list_stores` — list the connected stores on your account; widget, catalog, and product tools can target any of them.
-
-**Paid ads**
-- `list_ad_campaigns` — list your Meta ad campaigns with real delivery status (`effectiveStatus` truth-telling).
-- `get_ads_performance` — raw Meta performance, including spend, CTR, actions, and action values, per campaign, ad set, or ad. Confirm the merchant's conversion event before calculating ROAS; do not add different action types together.
-- `publish_to_meta_ads_library` — push a library video or image into Meta Ads Manager, ready for ad creation (no campaign, no spend).
-
-**AI widget reporting**
-- `list_ai_widgets` — find widgets built with the AI Widget Builder.
-- `get_ai_widget_analytics` — read one AI widget's saved metrics. It accepts a `widgetId` from `list_ai_widgets`; a storefront video widget's `publishId` from `list_widgets` does not work here.
-
-**Shopper** (separate public marketplace server — no auth)
-- `search_products` — search products across every brand store on Tolstoy, one marketplace-wide catalog.
-- `get_product` — full product details: description, variants, price, media, the brand's videos, and buy/cart links.
-- `try_on` — open an interactive virtual try-on of a product (participating brands); the shopper uploads a photo and sees themselves wearing the actual item.
-
-App-aware clients (ChatGPT, Claude) also get interactive views — a shoppable-widget card grid and asset previews — rendered inline in chat.
+App-aware clients (ChatGPT, Claude) also get an interactive Tolstoy view rendered inline in chat.
 
 ## Connect
 
 1. In your MCP client, add a custom connector / remote MCP server.
-2. Paste the Tolstoy (or Shopper) endpoint above.
-3. Sign in with your Tolstoy account when prompted (OAuth). Shopper needs no sign-in.
+2. Paste the endpoint from the table above.
+3. Complete the OAuth prompt: sign in to Tolstoy, or for Tolstoy Closet, approve the private closet connection.
 
 Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose, Cherry Studio, and more) is available in the Tolstoy platform under **Settings → MCP**.
 
 ### Cursor Marketplace plugin
 
-This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json). Install the repository as a local plugin while developing, or install Tolstoy from the Cursor Marketplace after the listing is approved. The plugin adds the OAuth-secured Tolstoy workspace server. The public Tolstoy Shopper server remains available through the endpoint and client configuration documented above.
+This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json). Install the repository as a local plugin while developing, or install Tolstoy from the Cursor Marketplace. The plugin adds the Tolstoy workspace server.
 
 ### Example client config
 
 ```json
 {
   "mcpServers": {
-    "tolstoy": { "url": "https://apilb.gotolstoy.com/mcp/v1/mcp" },
-    "tolstoy-shopper": { "url": "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp" }
+    "tolstoy": { "url": "https://apilb.gotolstoy.com/mcp/v1/mcp" }
   }
 }
 ```
@@ -94,9 +69,6 @@ This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.jso
 ```toml
 [mcp_servers.tolstoy]
 url = "https://apilb.gotolstoy.com/mcp/v1/mcp"
-
-[mcp_servers.tolstoy-shopper]
-url = "https://apilb.gotolstoy.com/mcp/v1/shopper/mcp"
 ```
 
 ```bash
@@ -105,7 +77,7 @@ codex mcp login tolstoy
 
 ## Authentication
 
-OAuth 2.1 with PKCE, backed by Amazon Cognito. Discovery via RFC 9728 protected-resource metadata at the server's `/.well-known` endpoints. Each connection is bound to the Tolstoy workspace you authorize with. **Shopper** is a public marketplace server and requires no authentication.
+OAuth 2.1 with PKCE. Discovery via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints. A Tolstoy or Tolstoy Library connection is bound to the Tolstoy workspace you authorize with. A Tolstoy Closet connection gets its own private guest closet after the shopper approves it. It needs no Tolstoy account; `get_shopbots_link` links it to a Shopbots account.
 
 ## Privacy, terms, and support
 
@@ -118,7 +90,7 @@ OAuth 2.1 with PKCE, backed by Amazon Cognito. Discovery via RFC 9728 protected-
 
 Published in the official [MCP Registry](https://registry.modelcontextprotocol.io):
 - `io.github.GoTolstoy/studio` — the main Tolstoy server
-- `io.github.GoTolstoy/shopper`
+- `io.github.GoTolstoy/closet` — Tolstoy Closet
 
 The `server.json` for each is in [`registry/`](./registry).
 
