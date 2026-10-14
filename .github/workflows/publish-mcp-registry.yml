@@ -2,6 +2,15 @@ name: Publish MCP Registry
 
 on:
   workflow_dispatch:
+    inputs:
+      server:
+        description: Server to publish
+        type: choice
+        required: true
+        default: studio
+        options:
+          - studio
+          - closet
 
 permissions:
   contents: read
@@ -14,15 +23,34 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Select server manifest
+        env:
+          SERVER: ${{ inputs.server }}
+        run: |
+          case "$SERVER" in
+            studio|closet) echo "MANIFEST=registry/${SERVER}.server.json" >> "$GITHUB_ENV" ;;
+            *) echo "::error::Unknown server: $SERVER"; exit 1 ;;
+          esac
+
       - name: Install MCP publisher
         run: |
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
 
+      - name: Validate server manifest
+        run: ./mcp-publisher validate "$MANIFEST"
+
       - name: Authenticate to MCP Registry
         run: ./mcp-publisher login github-oidc
 
-      - name: Publish Tolstoy Studio
-        run: ./mcp-publisher publish registry/studio.server.json
+      - name: Publish selected server
+        run: ./mcp-publisher publish "$MANIFEST"
 
-      - name: Publish Tolstoy Closet
-        run: ./mcp-publisher publish registry/closet.server.json
+      - name: Verify published server
+        run: |
+          name=$(jq -r '.name | @uri' "$MANIFEST")
+          version=$(jq -r '.version | @uri' "$MANIFEST")
+          curl --fail --silent --show-error "https://registry.modelcontextprotocol.io/v0.1/servers/${name}/versions/${version}" --output "$RUNNER_TEMP/registry-server.json"
+          jq --exit-status --slurpfile expected "$MANIFEST" '
+            .server == $expected[0] and
+            ._meta["io.modelcontextprotocol.registry/official"].status == "active"
+          ' "$RUNNER_TEMP/registry-server.json"
