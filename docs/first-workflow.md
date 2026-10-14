@@ -6,12 +6,11 @@ Use Tolstoy to find the existing media for one product, then create new content 
 
 | Client and scope | Remote MCP endpoint |
 | --- | --- |
-| Cursor: full Tolstoy workspace | `https://apilb.gotolstoy.com/mcp/v1/mcp` |
-| Claude: Tolstoy Library | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` |
+| Cursor, Claude, and other clients: Tolstoy workspace | `https://apilb.gotolstoy.com/mcp/v1/mcp` |
 
 In the client's connector or MCP settings, add the endpoint and complete the Tolstoy sign-in for your workspace. Your team may need to approve the connector first. Each person must also finish their own connection. A team approval or another person's successful sign-in does not establish yours.
 
-The Library endpoint covers existing media and the product catalog. It does not expose Studio generation.
+Claude connections, including the Tolstoy connector in Claude's directory, have no Studio generation by default. Without it, Claude can still search your products and library, read your models, templates, and projects, upload media, and read Studio chats.
 
 For client-specific installation steps, use **Settings → MCP** in Tolstoy. The [Cursor plugin](../.cursor-plugin/plugin.json) includes the workspace connection and the `tolstoy-product-media` skill.
 
@@ -25,11 +24,11 @@ Confirm that the product comes from your intended store. If it does not, disconn
 
 ## 3. Create new content
 
-With the full workspace connection, ask:
+With Studio generation available (Cursor and other clients, or Claude once Tolstoy has enabled your account), ask:
 
 > Create a product video for [product name] with Tolstoy Studio. Use the product from my store and the library media I chose. Show me the result and the chat ID.
 
-Studio returns a draft. Continue the same chat to revise it. A draft stays in Studio until you publish it in Tolstoy.
+Studio returns a draft. Continue the same chat to revise it. A draft stays in Studio until you publish it in Tolstoy. On Claude without Studio enabled, skip this step and create the content in Tolstoy, or ask support to enable it (see the troubleshooting table).
 
 ## If something blocks you
 
@@ -38,7 +37,7 @@ Studio returns a draft. Continue the same chat to revise it. A draft stays in St
 | An administrator approved Tolstoy, but you cannot use it | Add or enable the connector in your own client account and complete Tolstoy sign-in. Ask your administrator if the connector is not available to your account. |
 | A different brand or store | Reconnect to the correct Tolstoy workspace before reading or changing its media. |
 | Missing or old tools | Refresh tool discovery. If the client still caches an old tool list, create a new named connection and inspect it again. |
-| No Studio tools | You are on the Library connection. Connect the full workspace endpoint to create content. |
+| No Studio tools | You are on a Claude connection without Studio enabled. Create content in the Tolstoy platform, or contact [support@gotolstoy.com](mailto:support@gotolstoy.com) to enable Studio for your account, then add Tolstoy as a custom connector in Claude with the endpoint above. |
 | No suitable media | Upload your own approved media with the Tolstoy upload panel, or create new content in Studio. The assistant should explain the gap without inventing content. |
 | No inline preview | Use the preview links or open the media in Tolstoy. A text response does not prove the client rendered the media. |
 

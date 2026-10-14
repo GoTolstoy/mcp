@@ -1,13 +1,12 @@
 # Tolstoy MCP
 
-Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Create product images and videos with Tolstoy Studio and manage your media library right from chat.
+Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your media library right from chat, and create product images and videos with Tolstoy Studio outside Claude, or in Claude once Tolstoy has enabled it for your account.
 
 Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect.
 
 | Server | Endpoint | What it does |
 | --- | --- | --- |
-| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — create and revise images and videos with Tolstoy Studio from your products, Tolstoy models and templates, and manage your media library. |
-| **Tolstoy Library** | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Your media library and product catalog only. This scoped connection does not expose Studio generation. |
+| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — manage your media library, products, Tolstoy models, templates, and projects, and create and revise images and videos with Tolstoy Studio. Claude connections, including the Tolstoy connector in Claude's directory, have no Studio generation by default. To use it in Claude, ask [support@gotolstoy.com](mailto:support@gotolstoy.com) to enable your account, then add Tolstoy as a custom connector with this endpoint. |
 | **Tolstoy Closet** | `https://apilb.gotolstoy.com/mcp/v1/closet/mcp` | A shopper's private closet — save, find, and remove the clothes they own, and continue in the Shopbots app. |
 
 ## Start with one product
@@ -18,18 +17,18 @@ Follow the [first-workflow guide](docs/first-workflow.md) to confirm your store,
 
 **Tolstoy**
 
-- `run_agent` — send a request to Tolstoy Studio, which creates and revises images and videos. Pass the returned `chatId` to continue the same chat.
-- `get_agent_chat` — read a Studio chat's status and the media it produced.
+- `run_agent` — send a request to Tolstoy Studio, which creates and revises images and videos. Pass the returned `chatId` to continue the same chat. Off by default on Claude connections; Tolstoy support can enable it for your account.
+- `get_agent_chat` — read a Studio chat's status and the media it produced, including chats you made in the Tolstoy platform.
 - `search_products` — find products in your store's catalog.
 - `search_media` — search your library videos and images.
 - `get_media` — read a media item's details: tagged products, creator, expiry, and source file.
+- `update_media` — rename a media item, star it, and set its creator, expiration date, and product tags.
 - `search_fashion_models` — find your saved Tolstoy models (people with reference images) to use in Studio.
 - `search_templates` / `get_template` — find and read Studio templates.
+- `search_projects` — find your Studio projects and folders, whose context files apply to chats started in them.
 - `start_media_upload` / `finish_media_upload` — upload a local file to your library from a client that can run shell commands.
 - `upload_media_from_panel` — open the Tolstoy panel and pick files to upload to your library.
 - `open_tolstoy` — open Tolstoy in the client to browse and pick items by hand.
-
-**Tolstoy Library** — `search_products`, `search_media`, `get_media`, and `upload_media_from_panel`.
 
 **Tolstoy Closet**
 
@@ -38,7 +37,7 @@ Follow the [first-workflow guide](docs/first-workflow.md) to confirm your store,
 - `remove_closet_items` — remove saved items.
 - `get_shopbots_link` — create a private link to continue in the Shopbots app.
 
-App-aware clients (ChatGPT, Claude) also get an interactive Tolstoy view rendered inline in chat.
+App-aware clients (ChatGPT, Claude) also get an interactive Tolstoy view rendered inline in chat. It calls a few more tools (`get_app_home`, `list_agent_chats`, `fail_media_upload`) that the model does not see.
 
 ## Connect
 
@@ -77,7 +76,7 @@ codex mcp login tolstoy
 
 ## Authentication
 
-OAuth 2.1 with PKCE. Discovery via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints. A Tolstoy or Tolstoy Library connection is bound to the Tolstoy workspace you authorize with. A Tolstoy Closet connection gets its own private guest closet after the shopper approves it. It needs no Tolstoy account; `get_shopbots_link` links it to a Shopbots account.
+OAuth 2.1 with PKCE. Discovery via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints. A Tolstoy connection is bound to the Tolstoy workspace you authorize with. A Tolstoy Closet connection gets its own private guest closet after the shopper approves it. It needs no Tolstoy account; `get_shopbots_link` links it to a Shopbots account.
 
 ## Privacy, terms, and support
 
