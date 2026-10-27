@@ -1,0 +1,24 @@
+{
+  "name": "tolstoy",
+  "version": "1.1.0",
+  "description": "Manage your Tolstoy workspace from Claude: search your store's products and your media library, upload images and videos, and browse your saved models, templates, projects, and credit usage.",
+  "author": {
+    "name": "Tolstoy",
+    "url": "https://www.gotolstoy.com"
+  },
+  "homepage": "https://www.gotolstoy.com/mcp",
+  "repository": "https://github.com/GoTolstoy/mcp",
+  "license": "MIT",
+  "icon": "assets/logo.png",
+  "keywords": [
+    "tolstoy",
+    "ecommerce",
+    "shopify",
+    "media-library",
+    "product-catalog",
+    "mcp"
+  ],
+  "privacyPolicyUrl": "https://www.gotolstoy.com/privacy-policy",
+  "supportUrl": "https://help.gotolstoy.com/en/",
+  "termsOfServiceUrl": "https://www.gotolstoy.com/terms-of-use"
+}

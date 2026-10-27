@@ -1,34 +1,40 @@
 # Tolstoy MCP
 
-Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your media library right from chat, and create product images and videos with Tolstoy Studio outside Claude, or in Claude once Tolstoy has enabled it for your account.
+Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your Tolstoy workspace right from chat: your store's products, your media library, uploads, saved models, templates, projects, and credit usage.
 
 Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect.
 
 | Server | Endpoint | What it does |
 | --- | --- | --- |
-| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — manage your media library, products, Tolstoy models, templates, and projects, and create and revise images and videos with Tolstoy Studio. Claude connections, including the Tolstoy connector in Claude's directory, have no Studio generation by default. To use it in Claude, ask [support@gotolstoy.com](mailto:support@gotolstoy.com) to enable your account, then add Tolstoy as a custom connector with this endpoint. |
+| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — search your products and media library, upload media, and read your saved models, templates, projects, and usage. |
 | **Tolstoy Closet** | `https://apilb.gotolstoy.com/mcp/v1/closet/mcp` | A shopper's private closet — save, find, and remove the clothes they own, and continue in the Shopbots app. |
 
 ## Start with one product
 
-Follow the [first-workflow guide](docs/first-workflow.md) to confirm your store, find existing media for a product, and create new content for it. The Cursor plugin also includes the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md) for this workflow.
+The Claude and Cursor plugins include the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md): confirm the product in your store, shortlist the library media that fits it, and upload what is missing.
 
 ## Tools
 
 **Tolstoy**
 
-- `run_agent` — send a request to Tolstoy Studio, which creates and revises images and videos. Pass the returned `chatId` to continue the same chat. Off by default on Claude connections; Tolstoy support can enable it for your account.
-- `get_agent_chat` — read a Studio chat's status and the media it produced, including chats you made in the Tolstoy platform.
-- `search_products` — find products in your store's catalog.
+- `search_products` — find products in your store's catalog, with their variants and ids.
+- `get_brand_context` — read your store's brand profile: logos, colors, fonts, audience, and size guide.
+- `connect_products` — open the Tolstoy panel to connect your product catalog: a Shopify store, a product file, or a feed.
 - `search_media` — search your library videos and images.
 - `get_media` — read a media item's details: tagged products, creator, expiry, and source file.
-- `update_media` — rename a media item, star it, and set its creator, expiration date, and product tags.
-- `search_fashion_models` — find your saved Tolstoy models (people with reference images) to use in Studio.
-- `search_templates` / `get_template` — find and read Studio templates.
-- `search_projects` — find your Studio projects and folders, whose context files apply to chats started in them.
+- `analyze_media` — ask one question about a video or audio file. Spends credits and changes nothing in your library.
 - `start_media_upload` / `finish_media_upload` — upload a local file to your library from a client that can run shell commands.
 - `upload_media_from_panel` — open the Tolstoy panel and pick files to upload to your library.
-- `open_tolstoy` — open Tolstoy in the client to browse and pick items by hand.
+- `search_fashion_models` — find your saved Tolstoy models: people with reference images.
+- `save_fashion_model` — save existing images of one person as a new saved model.
+- `search_templates` / `get_template` — find and read content templates.
+- `search_projects` — list your projects and their folders.
+- `list_skills` / `get_skill` — read Tolstoy's creative skills, the guidance the Tolstoy Agent follows.
+- `get_agent_chat` / `stop_agent` — read or stop a Tolstoy Agent chat, including chats you started in the Tolstoy platform.
+- `get_generation` — read a generation's status and the library items it saved.
+- `list_voices` — search the voice library and its voice previews.
+- `get_usage` — read your workspace's credit balances and usage for this billing period.
+- `open_tolstoy` — open Tolstoy in the client to browse your library, models, templates, and conversations by hand.
 
 **Tolstoy Closet**
 
@@ -37,7 +43,7 @@ Follow the [first-workflow guide](docs/first-workflow.md) to confirm your store,
 - `remove_closet_items` — remove saved items.
 - `get_shopbots_link` — create a private link to continue in the Shopbots app.
 
-App-aware clients (ChatGPT, Claude) also get an interactive Tolstoy view rendered inline in chat. It calls a few more tools (`get_app_home`, `list_agent_chats`, `fail_media_upload`) that the model does not see.
+App-aware clients (ChatGPT, Claude) also get an interactive Tolstoy view rendered inline in chat. It calls a few more tools that the model does not see.
 
 ## Connect
 
@@ -46,6 +52,10 @@ App-aware clients (ChatGPT, Claude) also get an interactive Tolstoy view rendere
 3. Complete the OAuth prompt: sign in to Tolstoy, or for Tolstoy Closet, approve the private closet connection.
 
 Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose, Cherry Studio, and more) is available in the Tolstoy platform under **Settings → MCP**.
+
+### Claude plugin
+
+This repository is also a Claude plugin: [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) and [`.mcp.json`](./.mcp.json). The plugin adds the Tolstoy workspace server and the `tolstoy-product-media` skill. Load it locally with `claude --plugin-dir .` from a clone of this repository.
 
 ### Cursor Marketplace plugin
 
