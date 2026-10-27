@@ -8,6 +8,7 @@
   },
   "homepage": "https://www.gotolstoy.com/mcp",
   "repository": "https://github.com/GoTolstoy/mcp",
+  "documentationUrl": "https://github.com/GoTolstoy/mcp#readme",
   "license": "MIT",
   "icon": "assets/logo.png",
   "keywords": [
