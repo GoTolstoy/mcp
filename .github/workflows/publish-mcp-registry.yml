@@ -81,7 +81,7 @@ jobs:
           MESSAGE: ${{ inputs.message }}
         run: |
           [[ "$NAME" =~ ^io\.github\.GoTolstoy/[a-z0-9-]+$ ]] || { echo "::error::name must be io.github.GoTolstoy/<server>"; exit 1; }
-          args=(--status "$STATUS" --all-versions)
+          args=(--status "$STATUS" --all-versions --yes)
           [ -n "$MESSAGE" ] && args+=(--message "$MESSAGE")
           ./mcp-publisher status "${args[@]}" "$NAME"
 
