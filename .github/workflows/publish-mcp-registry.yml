@@ -3,14 +3,39 @@ name: Publish MCP Registry
 on:
   workflow_dispatch:
     inputs:
-      server:
-        description: Server to publish
+      action:
+        description: Publish a manifest, or set a server's status (all versions)
         type: choice
         required: true
-        default: studio
+        default: publish
         options:
-          - studio
+          - publish
+          - set-status
+      server:
+        description: Manifest to publish (action publish)
+        type: choice
+        required: true
+        default: tolstoy
+        options:
+          - tolstoy
           - closet
+      name:
+        description: Registry server name, e.g. io.github.GoTolstoy/studio (action set-status)
+        type: string
+        required: false
+      status:
+        description: New status (action set-status)
+        type: choice
+        required: true
+        default: deleted
+        options:
+          - active
+          - deprecated
+          - deleted
+      message:
+        description: Status message, up to 500 characters (action set-status)
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -24,11 +49,12 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Select server manifest
+        if: inputs.action == 'publish'
         env:
           SERVER: ${{ inputs.server }}
         run: |
           case "$SERVER" in
-            studio|closet) echo "MANIFEST=registry/${SERVER}.server.json" >> "$GITHUB_ENV" ;;
+            tolstoy|closet) echo "MANIFEST=registry/${SERVER}.server.json" >> "$GITHUB_ENV" ;;
             *) echo "::error::Unknown server: $SERVER"; exit 1 ;;
           esac
 
@@ -37,15 +63,30 @@ jobs:
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
 
       - name: Validate server manifest
+        if: inputs.action == 'publish'
         run: ./mcp-publisher validate "$MANIFEST"
 
       - name: Authenticate to MCP Registry
         run: ./mcp-publisher login github-oidc
 
       - name: Publish selected server
+        if: inputs.action == 'publish'
         run: ./mcp-publisher publish "$MANIFEST"
 
+      - name: Set server status
+        if: inputs.action == 'set-status'
+        env:
+          NAME: ${{ inputs.name }}
+          STATUS: ${{ inputs.status }}
+          MESSAGE: ${{ inputs.message }}
+        run: |
+          [[ "$NAME" =~ ^io\.github\.GoTolstoy/[a-z0-9-]+$ ]] || { echo "::error::name must be io.github.GoTolstoy/<server>"; exit 1; }
+          args=(--status "$STATUS" --all-versions)
+          [ -n "$MESSAGE" ] && args+=(--message "$MESSAGE")
+          ./mcp-publisher status "${args[@]}" "$NAME"
+
       - name: Verify published server
+        if: inputs.action == 'publish'
         run: |
           name=$(jq -r '.name | @uri' "$MANIFEST")
           version=$(jq -r '.version | @uri' "$MANIFEST")

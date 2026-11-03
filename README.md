@@ -100,7 +100,7 @@ OAuth 2.1 with PKCE. Discovery via RFC 9728 protected-resource metadata at each 
 Published in the official [MCP Registry](https://registry.modelcontextprotocol.io):
 - `io.github.GoTolstoy/tolstoy` — the main Tolstoy server
 
-Its `server.json` is [`registry/studio.server.json`](./registry/studio.server.json) (the file keeps its old path so the publish workflow's `studio` option publishes it). Tolstoy Closet's (`io.github.GoTolstoy/closet`, not yet published) is next to it. The older `io.github.GoTolstoy/studio`, `library` and `shopper` entries are being retired: `studio` is replaced by `tolstoy` at the same endpoint, and the `library` and `shopper` endpoints no longer exist.
+Its `server.json` is [`registry/tolstoy.server.json`](./registry/tolstoy.server.json). Tolstoy Closet's (`io.github.GoTolstoy/closet`, not yet published) is next to it. Tolstoy runs no other server. The older `io.github.GoTolstoy/studio`, `library` and `shopper` entries are retired (status `deleted`); `studio` is replaced by `tolstoy` at the same endpoint. The publish workflow's `set-status` action changes a server's status over GitHub OIDC.
 
 ## About
 
