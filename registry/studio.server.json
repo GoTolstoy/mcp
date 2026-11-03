@@ -1,10 +1,15 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.GoTolstoy/studio",
+  "name": "io.github.GoTolstoy/tolstoy",
   "title": "Tolstoy",
-  "description": "Manage your Tolstoy media library, products, models, templates, and projects, and create ecommerce images and videos with Tolstoy Studio where enabled.",
-  "version": "1.2.0",
-  "websiteUrl": "https://platform.gotolstoy.com/settings/mcp?server=studio",
+  "description": "Manage your Tolstoy workspace: products, media library, uploads, models, templates and projects.",
+  "version": "1.3.0",
+  "websiteUrl": "https://www.gotolstoy.com/mcp",
+  "repository": {
+    "url": "https://github.com/GoTolstoy/mcp",
+    "source": "github",
+    "id": "1257087644"
+  },
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/GoTolstoy/mcp/main/assets/logo.png",
