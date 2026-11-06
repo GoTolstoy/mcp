@@ -41,14 +41,6 @@ permissions:
   contents: read
   id-token: write
 
-# Calls the registry API the way mcp-publisher 1.8.7 does, so the plugin ships no command that fetches code to run.
-env:
-  REGISTRY_URL: https://registry.modelcontextprotocol.io
-
-defaults:
-  run:
-    shell: bash
-
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -66,32 +58,29 @@ jobs:
             *) echo "::error::Unknown server: $SERVER"; exit 1 ;;
           esac
 
+      - name: Install MCP publisher
+        env:
+          MCP_PUBLISHER_VERSION: 1.8.7
+        run: |
+          base="https://github.com/modelcontextprotocol/registry/releases/download/v${MCP_PUBLISHER_VERSION}"
+          archive="mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz"
+          dir="$RUNNER_TEMP/mcp-publisher-download"
+          mkdir -p "$dir"
+          curl --fail --silent --show-error --location --output "$dir/$archive" "$base/$archive"
+          curl --fail --silent --show-error --location --output "$dir/checksums.txt" "$base/registry_${MCP_PUBLISHER_VERSION}_checksums.txt"
+          (cd "$dir" && grep -F " $archive" checksums.txt | grep -v '\.sbom\.json' | sha256sum --check --strict -)
+          tar -xzf "$dir/$archive" -C . mcp-publisher
+
       - name: Validate server manifest
         if: inputs.action == 'publish'
-        run: |
-          curl --fail-with-body --silent --show-error --json @"$MANIFEST" "$REGISTRY_URL/v0/validate" |
-            jq --exit-status '., .valid'
+        run: ./mcp-publisher validate "$MANIFEST"
 
       - name: Authenticate to MCP Registry
-        id: login
-        run: |
-          token=$(
-            curl --fail-with-body --silent --show-error --get --data-urlencode "audience=$REGISTRY_URL" \
-              --header "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" |
-              jq '{oidc_token: .value}' |
-              curl --fail-with-body --silent --show-error --json @- "$REGISTRY_URL/v0/auth/github-oidc" |
-              jq --raw-output '.registry_token // error(tostring)'
-          )
-          echo "::add-mask::$token"
-          echo "token=$token" >> "$GITHUB_OUTPUT"
+        run: ./mcp-publisher login github-oidc
 
       - name: Publish selected server
         if: inputs.action == 'publish'
-        env:
-          REGISTRY_TOKEN: ${{ steps.login.outputs.token }}
-        run: |
-          curl --fail-with-body --silent --show-error --json @"$MANIFEST" \
-            --header "Authorization: Bearer $REGISTRY_TOKEN" "$REGISTRY_URL/v0/publish"
+        run: ./mcp-publisher publish "$MANIFEST"
 
       - name: Set server status
         if: inputs.action == 'set-status'
@@ -99,13 +88,11 @@ jobs:
           NAME: ${{ inputs.name }}
           STATUS: ${{ inputs.status }}
           MESSAGE: ${{ inputs.message }}
-          REGISTRY_TOKEN: ${{ steps.login.outputs.token }}
         run: |
           [[ "$NAME" =~ ^io\.github\.GoTolstoy/[a-z0-9-]+$ ]] || { echo "::error::name must be io.github.GoTolstoy/<server>"; exit 1; }
-          name=$(jq --null-input --raw-output 'env.NAME | @uri')
-          jq --null-input '{status: env.STATUS} + if env.MESSAGE == "" then {} else {statusMessage: env.MESSAGE} end' |
-            curl --fail-with-body --silent --show-error --json @- --request PATCH \
-              --header "Authorization: Bearer $REGISTRY_TOKEN" "$REGISTRY_URL/v0/servers/$name/status"
+          args=(--status "$STATUS" --all-versions --yes)
+          [ -n "$MESSAGE" ] && args+=(--message "$MESSAGE")
+          ./mcp-publisher status "${args[@]}" "$NAME"
 
       - name: Verify published server
         if: inputs.action == 'publish'
