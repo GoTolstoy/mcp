@@ -59,8 +59,17 @@ jobs:
           esac
 
       - name: Install MCP publisher
+        env:
+          MCP_PUBLISHER_VERSION: 1.8.7
         run: |
-          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+          base="https://github.com/modelcontextprotocol/registry/releases/download/v${MCP_PUBLISHER_VERSION}"
+          archive="mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz"
+          dir="$RUNNER_TEMP/mcp-publisher-download"
+          mkdir -p "$dir"
+          curl --fail --silent --show-error --location --output "$dir/$archive" "$base/$archive"
+          curl --fail --silent --show-error --location --output "$dir/checksums.txt" "$base/registry_${MCP_PUBLISHER_VERSION}_checksums.txt"
+          (cd "$dir" && grep -F " $archive" checksums.txt | grep -v '\.sbom\.json' | sha256sum --check --strict -)
+          tar -xzf "$dir/$archive" -C . mcp-publisher
 
       - name: Validate server manifest
         if: inputs.action == 'publish'
