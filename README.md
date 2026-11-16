@@ -1,21 +1,19 @@
 # Tolstoy MCP
 
-Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your Tolstoy workspace right from chat: your store's products, your media library, uploads, saved models, templates, projects, credit usage, and your store's analytics.
+Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your Tolstoy workspace right from chat: your store's products, your media library, uploads, saved models, templates, projects, credit usage, and store analytics.
 
 Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect.
 
 | Server | Endpoint | What it does |
 | --- | --- | --- |
-| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — search your products and media library, upload media, read your saved models, templates, projects, and usage, and read your store's analytics report. |
+| **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — search your products and media library, upload media, and read your saved models, templates, projects, and usage. |
 | **Tolstoy Closet** | `https://apilb.gotolstoy.com/mcp/v1/closet/mcp` | A shopper's private closet — save, find, and remove the clothes they own, and continue in the Shopbots app. |
 
 ## Start with one product
 
 The Claude and Cursor plugins include the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md): confirm the product in your store, shortlist the library media that fits it, and upload what is missing.
 
-## Add analytics to a store
-
-The plugins also include the [`ecommerce-analytics` skill](skills/ecommerce-analytics/SKILL.md): what to measure in a store, which events to send, benchmarks per vertical from Tolstoy's store data, and how to send the store's events with the Tolstoy SDK and read their shoppers, orders and revenue with `get_store_analytics`. Ask your agent: "Add analytics to this store."
+The plugins also include the [`ecommerce-analytics` skill](skills/ecommerce-analytics/SKILL.md) for adding analytics to a store with the Tolstoy SDK.
 
 ## Tools
 
@@ -39,7 +37,7 @@ The plugins also include the [`ecommerce-analytics` skill](skills/ecommerce-anal
 - `list_voices` — search the voice library and its voice previews.
 - `get_usage` — read your workspace's credit balances and usage for this billing period.
 - `list_workspaces` — list your Tolstoy workspaces with their app keys; `currentAppKey` is the workspace of this connection.
-- `get_store_analytics` — read a store's analytics report: its Tolstoy widgets, and the events it sends with the Tolstoy SDK and their shoppers, orders and revenue.
+- `get_store_analytics` — read a store's analytics report: its Tolstoy widgets, and the event and shopper counts of each event it sends with the Tolstoy SDK.
 - `open_tolstoy` — open Tolstoy in the client to browse your library, models, templates, and conversations by hand.
 
 **Tolstoy Closet**
