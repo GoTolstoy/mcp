@@ -1,6 +1,6 @@
 # Tolstoy MCP
 
-Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your Tolstoy workspace right from chat: your store's products, your media library, uploads, saved models, templates, projects, and credit usage.
+Connect any MCP client — Claude, ChatGPT, Cursor, Gemini, and more — to **Tolstoy**, the agentic platform for AI-native ecommerce brands. Manage your Tolstoy workspace right from chat: your store's products, your media library, uploads, saved models, templates, projects, credit usage, and store analytics.
 
 Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 2.1 + PKCE — no API keys to paste, your client runs the OAuth sign-in on first connect.
 
@@ -12,6 +12,8 @@ Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 
 ## Start with one product
 
 The Claude and Cursor plugins include the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md): confirm the product in your store, shortlist the library media that fits it, and upload what is missing.
+
+The plugins also include the [`ecommerce-analytics` skill](skills/ecommerce-analytics/SKILL.md) for adding analytics to a store with the Tolstoy SDK.
 
 ## Tools
 
@@ -34,6 +36,8 @@ The Claude and Cursor plugins include the [`tolstoy-product-media` skill](skills
 - `get_generation` — read a generation's status and the library items it saved.
 - `list_voices` — search the voice library and its voice previews.
 - `get_usage` — read your workspace's credit balances and usage for this billing period.
+- `list_workspaces` — list your Tolstoy workspaces with their app keys; `currentAppKey` is the workspace of this connection.
+- `get_store_analytics` — read a store's analytics report: its Tolstoy widgets, and the event and shopper counts of each event it sends with the Tolstoy SDK.
 - `open_tolstoy` — open Tolstoy in the client to browse your library, models, templates, and conversations by hand.
 
 **Tolstoy Closet**
@@ -55,7 +59,7 @@ Per-client setup (Claude, ChatGPT, Cursor, Gemini CLI, Codex, Perplexity, Goose,
 
 ### Claude plugin
 
-This repository is also a Claude plugin: [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) and [`.mcp.json`](./.mcp.json). The plugin adds the Tolstoy workspace server and the `tolstoy-product-media` skill. Load it locally with `claude --plugin-dir .` from a clone of this repository.
+This repository is also a Claude plugin: [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) and [`.mcp.json`](./.mcp.json). The plugin adds the Tolstoy workspace server and the `tolstoy-product-media` and `ecommerce-analytics` skills. Load it locally with `claude --plugin-dir .` from a clone of this repository.
 
 ### Cursor Marketplace plugin
 
