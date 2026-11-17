@@ -1,6 +1,6 @@
 {
   "name": "tolstoy",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Manage your Tolstoy workspace from Claude: search your store's products and your media library, upload images and videos, and browse your saved models, templates, projects, credit usage, and store analytics.",
   "author": {
     "name": "Tolstoy",
