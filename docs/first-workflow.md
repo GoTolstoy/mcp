@@ -12,7 +12,7 @@ In the client's connector or MCP settings, add the endpoint and complete the Tol
 
 Claude connections, including the Tolstoy connector in Claude's directory, have no Studio generation by default. Without it, Claude can still search your products and library, read your models, templates, and projects, upload media, and read Studio chats.
 
-For client-specific installation steps, use **Settings → MCP** in Tolstoy. The [Cursor plugin](../.cursor-plugin/plugin.json) includes the workspace connection, the `tolstoy-product-media` skill, and the skills for platforms connected in Tolstoy.
+For client-specific installation steps, use **Settings → MCP** in Tolstoy. The [Cursor plugin](../.cursor-plugin/plugin.json) includes the workspace connection, the `tolstoy-product-media` skill, and the skill for platforms connected in Tolstoy.
 
 ## 2. Find the product and its media
 

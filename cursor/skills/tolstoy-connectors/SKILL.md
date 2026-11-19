@@ -91,7 +91,7 @@ separately.
 | Shopify | Catalog, orders, customers, analytics, themes and content, through the Admin API |
 | TikTok | Organic profile publishing, account content and performance |
 | TikTok Ads | Campaigns, ad groups and ads, budgets, targeting, creatives, performance |
-| TikTok Shop | Seller catalog, shoppable posts, product anchors, shop performance, orders |
+| TikTok Shop | Seller catalog, shoppable posts, product anchors, shop performance, order counts |
 | X | Organic posts where the brand's X API plan allows reads, and X Ads when the connection granted ads access |
 | Google Analytics | GA4 traffic, acquisition, key events, ecommerce, promotions, audiences, realtime |
 | Slack | Channel messages, reactions and pins, files, users |

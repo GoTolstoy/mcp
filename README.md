@@ -91,7 +91,7 @@ This repository is also a Cursor plugin: [`.cursor-plugin/plugin.json`](./.curso
 - the always-on rule [`rules/use-tolstoy.mdc`](./rules/use-tolstoy.mdc), which sends requests for the brand's own data in a connected platform to Tolstoy, and leaves code that integrates with a platform alone;
 - the agent [`cursor/agents/tolstoy-commerce-agent.md`](./cursor/agents/tolstoy-commerce-agent.md).
 
-To try it locally, link a clone of this repository to `~/.cursor/plugins/local/tolstoy` and reload Cursor. The Cursor-only skills and agent live under `cursor/` so the Claude plugin keeps its own two skills.
+To try it locally, link a clone of this repository to `~/.cursor/plugins/local/tolstoy` and reload Cursor. The Cursor-only skill and agent live under `cursor/` so the Claude plugin keeps its own two skills.
 
 ### Example client config
 
