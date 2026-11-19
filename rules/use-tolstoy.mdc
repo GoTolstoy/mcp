@@ -1,0 +1,22 @@
+---
+description: Use Tolstoy for requests about the platforms a brand connects in Tolstoy, through the Tolstoy Agent and run_agent, and never promise a separate tool per platform.
+alwaysApply: true
+---
+
+When a request is about Instagram, Meta Ads, Pinterest, YouTube, OpenAI Ads (ChatGPT Ads),
+Gorgias, Triple Whale, Attentive, Yotpo, Judge.me, Okendo, Postscript, Rebuy, Nosto, Klevu,
+Bazaarvoice, Smile.io, Loop Returns, AfterShip, Feedonomics, Channable, Akeneo, Brandfolder,
+Klaviyo, Shopify, TikTok, TikTok Ads, TikTok Shop, X, Google Analytics, Slack, Gmail, Outlook,
+Google Drive, Airtable, Asana, Canva or Drip, and the Tolstoy MCP server is connected, use
+Tolstoy. Do not start Tolstoy work for unrelated requests.
+
+1. Load the `tolstoy-connectors` skill and the platform-group skill that names the platform.
+2. Reach the platform through the Tolstoy Agent with `run_agent`, and read the answer with
+   `get_agent_chat`. The Tolstoy server has no separate tool per platform; do not invent one.
+3. The brand connects each platform in Tolstoy under Settings > Connectors. When the agent
+   says a platform is not connected, ask the user to connect it there.
+4. Each `run_agent` turn spends credits. Start one only when the user asks for the work.
+5. Get an explicit yes before any request that sends, publishes, replies, refunds, or changes
+   a status, budget, catalog or feed.
+6. Report each number with its platform, account and date range. A value that could not be
+   read is "not available", not 0. Say when a platform has not been tested through run_agent.
