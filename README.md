@@ -87,7 +87,7 @@ This repository is also a Cursor plugin: [`.cursor-plugin/plugin.json`](./.curso
 
 - the Tolstoy workspace server (`https://apilb.gotolstoy.com/mcp/v1/mcp`, OAuth);
 - the `tolstoy-product-media` and `ecommerce-analytics` skills from [`skills/`](./skills/);
-- the `tolstoy` (images, videos, audio, creative skills, saved models, credits), `widgets` (AI widgets) and `tolstoy-connectors` (platforms connected in Tolstoy) skills from [`cursor/skills/`](./cursor/skills/);
+- the `tolstoy-connectors` skill (platforms connected in Tolstoy) from [`cursor/skills/`](./cursor/skills/);
 - the always-on rule [`rules/use-tolstoy.mdc`](./rules/use-tolstoy.mdc), which sends requests for the brand's own data in a connected platform to Tolstoy, and leaves code that integrates with a platform alone;
 - the agent [`cursor/agents/tolstoy-commerce-agent.md`](./cursor/agents/tolstoy-commerce-agent.md).
 
