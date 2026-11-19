@@ -9,6 +9,25 @@ Tolstoy exposes its remote MCP servers over Streamable HTTP, secured with OAuth 
 | **Tolstoy** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Your Tolstoy workspace — search your products and media library, upload media, and read your saved models, templates, projects, and usage. |
 | **Tolstoy Closet** | `https://apilb.gotolstoy.com/mcp/v1/closet/mcp` | A shopper's private closet — save, find, and remove the clothes they own, and continue in the Shopbots app. |
 
+## Platforms the brand connects in Tolstoy
+
+A brand connects its other platforms once in the Tolstoy platform, under **Settings > Connectors**. The Tolstoy Agent can then work with them, and an MCP client reaches the Tolstoy Agent with the `run_agent` tool. There is no separate MCP tool per platform.
+
+| Group | Platforms |
+| --- | --- |
+| Social and video | Instagram, Pinterest, YouTube, TikTok, X |
+| Paid ads | Meta Ads, OpenAI Ads (ChatGPT Ads), TikTok Ads |
+| Customer support | Gorgias |
+| Reviews and UGC | Yotpo, Judge.me, Okendo, Bazaarvoice |
+| Email and SMS | Klaviyo, Attentive, Postscript, Drip |
+| Store and attribution analytics | Triple Whale, Shopify, TikTok Shop, Google Analytics |
+| Search and merchandising | Rebuy, Nosto, Klevu |
+| Loyalty, returns and shipping | Smile.io, Loop Returns, AfterShip |
+| Catalog, feeds and PIM | Feedonomics, Channable, Akeneo |
+| Brand assets and team tools | Brandfolder, Canva, Google Drive, Airtable, Asana, Slack, Gmail, Outlook |
+
+Each `run_agent` turn spends the workspace's credits. What each connector covers is listed in the [`tolstoy-connectors` skill](cursor/skills/tolstoy-connectors/SKILL.md).
+
 ## Start with one product
 
 The Claude and Cursor plugins include the [`tolstoy-product-media` skill](skills/tolstoy-product-media/SKILL.md): confirm the product in your store, shortlist the library media that fits it, and upload what is missing.
@@ -32,6 +51,7 @@ The plugins also include the [`ecommerce-analytics` skill](skills/ecommerce-anal
 - `search_templates` / `get_template` — find and read content templates.
 - `search_projects` — list your projects and their folders.
 - `list_skills` / `get_skill` — read Tolstoy's creative skills, the guidance the Tolstoy Agent follows.
+- `run_agent` — send a request to the Tolstoy Agent, including requests about the platforms connected under Settings > Connectors. A turn spends credits.
 - `get_agent_chat` / `stop_agent` — read or stop a Tolstoy Agent chat, including chats you started in the Tolstoy platform.
 - `get_generation` — read a generation's status and the library items it saved.
 - `list_voices` — search the voice library and its voice previews.
@@ -63,7 +83,15 @@ This repository is also a Claude plugin: [`.claude-plugin/plugin.json`](./.claud
 
 ### Cursor Marketplace plugin
 
-This repository includes a Cursor plugin manifest in [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json). Install the repository as a local plugin while developing, or install Tolstoy from the Cursor Marketplace. The plugin adds the Tolstoy workspace server.
+This repository is also a Cursor plugin: [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) and [`mcp.json`](./mcp.json). The plugin adds:
+
+- the Tolstoy workspace server (`https://apilb.gotolstoy.com/mcp/v1/mcp`, OAuth);
+- the `tolstoy-product-media` and `ecommerce-analytics` skills from [`skills/`](./skills/);
+- the `tolstoy-connectors` skill (platforms connected in Tolstoy) from [`cursor/skills/`](./cursor/skills/);
+- the always-on rule [`rules/use-tolstoy.mdc`](./rules/use-tolstoy.mdc), which sends requests for the brand's own data in a connected platform to Tolstoy, and leaves code that integrates with a platform alone;
+- the agent [`cursor/agents/tolstoy-commerce-agent.md`](./cursor/agents/tolstoy-commerce-agent.md).
+
+To try it locally, link a clone of this repository to `~/.cursor/plugins/local/tolstoy` and reload Cursor. The Cursor-only skill and agent live under `cursor/` so the Claude plugin keeps its own two skills.
 
 ### Example client config
 
@@ -97,6 +125,7 @@ OAuth 2.1 with PKCE. Discovery via RFC 9728 protected-resource metadata at each 
 - [Privacy policy](https://www.gotolstoy.com/privacy-policy)
 - [Terms of use](https://www.gotolstoy.com/terms-of-use)
 - Support: [support@gotolstoy.com](mailto:support@gotolstoy.com)
+- Security reports: [rnd@gotolstoy.com](mailto:rnd@gotolstoy.com) (see [SECURITY.md](./SECURITY.md))
 - Security overview: [gotolstoy.com/security](https://www.gotolstoy.com/security)
 
 ## Registry
