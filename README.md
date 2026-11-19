@@ -26,7 +26,7 @@ A brand connects its other platforms once in the Tolstoy platform, under **Setti
 | Catalog, feeds and PIM | Feedonomics, Channable, Akeneo |
 | Brand assets and team tools | Brandfolder, Canva, Google Drive, Airtable, Asana, Slack, Gmail, Outlook |
 
-Reaching platforms through `run_agent` is new. In Tolstoy's tests, Klaviyo returned real data and X returned thin data; the Attentive connector has no campaign reporting; the other platforms are not tested through `run_agent` yet. Each `run_agent` turn spends the workspace's credits.
+Each `run_agent` turn spends the workspace's credits. What each connector covers is listed in the [`tolstoy-connectors` skill](cursor/skills/tolstoy-connectors/SKILL.md).
 
 ## Start with one product
 
@@ -87,8 +87,8 @@ This repository is also a Cursor plugin: [`.cursor-plugin/plugin.json`](./.curso
 
 - the Tolstoy workspace server (`https://apilb.gotolstoy.com/mcp/v1/mcp`, OAuth);
 - the `tolstoy-product-media` and `ecommerce-analytics` skills from [`skills/`](./skills/);
-- the `tolstoy-connectors` skill and one skill per platform group from [`cursor/skills/`](./cursor/skills/);
-- the always-on rule [`rules/use-tolstoy.mdc`](./rules/use-tolstoy.mdc), which sends requests about connected platforms to Tolstoy;
+- the `tolstoy` (images, videos, audio, creative skills, saved models, credits), `widgets` (AI widgets) and `tolstoy-connectors` (platforms connected in Tolstoy) skills from [`cursor/skills/`](./cursor/skills/);
+- the always-on rule [`rules/use-tolstoy.mdc`](./rules/use-tolstoy.mdc), which sends requests for the brand's own data in a connected platform to Tolstoy, and leaves code that integrates with a platform alone;
 - the agent [`cursor/agents/tolstoy-commerce-agent.md`](./cursor/agents/tolstoy-commerce-agent.md).
 
 To try it locally, link a clone of this repository to `~/.cursor/plugins/local/tolstoy` and reload Cursor. The Cursor-only skills and agent live under `cursor/` so the Claude plugin keeps its own two skills.
