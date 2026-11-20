@@ -15,6 +15,10 @@ Before you change the file tree or a manifest, read the current rules. Don't rel
 - Cursor Marketplace: [Plugins reference](https://cursor.com/docs/reference/plugins) and the [plugin schema](https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json).
 - MCP Registry: [registry docs](https://registry.modelcontextprotocol.io/docs) and the [registry repository docs](https://github.com/modelcontextprotocol/registry/tree/main/docs).
 - Glama: [server listing](https://glama.ai/mcp/servers/GoTolstoy/mcp) and the [`glama.json` schema](https://glama.ai/mcp/schemas/server.json).
+- Possible future stores:
+  - OpenAI plugins for ChatGPT and Codex: [package](https://developers.openai.com/plugins/build/plugins) and [submit](https://developers.openai.com/plugins/deploy/submission).
+  - Gemini CLI extensions: [reference](https://geminicli.com/docs/extensions/reference/) and [release](https://geminicli.com/docs/extensions/releasing/).
+  - The [Agent Plugins](https://agent-plugins.org) standard.
 
 ## Which files each client reads
 
@@ -36,6 +40,15 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
 - **`skills/` at the root is shared.** Claude Code loads `skills/` and `agents/` from the plugin root, and the Cursor manifest also lists `skills/`. Put a skill there only if both clients should ship it.
 - **Cursor-only files live under `cursor/`, `rules/` and `.cursor-plugin/`.** Cursor-only skills and agents go in `cursor/skills/` and `cursor/agents/`, never in a root `agents/` or `skills/`. Use a rule file format that both Cursor and the Claude directory accept.
 - **Registry manifests stay at `registry/*.server.json`.** The publish workflow reads those paths.
+
+## Adding another store
+
+1. Read that store's docs above and find which files it needs, and where.
+2. Check every new file against the Claude directory rules, because it will sit inside the Claude plugin. Store templates often use file types the Claude directory refuses, so check before copying a template file as it is. For example, Cursor's own template uses an `.mdc` rule and an SVG logo.
+3. Check whether the new manifest is also read by a client that's already here. Cursor, for example, loads a root `plugin.json` in the Agent Plugins format as well as `.cursor-plugin/plugin.json`. If two clients would read the same path, test both before merging.
+4. Prefer packages the store builds from an upload, when it offers one, over committing new files.
+5. If a store needs a file the Claude directory won't accept, or needs to own the repository root, stop and raise it with the repository owner. The alternative layout gives each plugin its own subfolder, and that needs a new Claude submission.
+6. Add the store to the table above.
 
 ## Before merging
 

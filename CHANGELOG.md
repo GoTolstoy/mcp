@@ -5,6 +5,7 @@
 - AGENTS.md and README link to each provider's rules instead of restating them.
 - AGENTS.md: every file in the repository is part of the Claude plugin, so a file added for another client is checked against the Claude directory's file rules before merging.
 - README and CHANGELOG no longer write image paths in backticks, which the Claude directory flagged.
+- AGENTS.md: how to add another store without breaking the Claude or Cursor plugin, with links to OpenAI, Gemini CLI and Agent Plugins docs.
 
 ## 1.2.5 (Claude) - 2026-11-20
 
