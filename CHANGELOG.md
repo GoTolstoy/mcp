@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased - 2026-11-20
+
+- AGENTS.md and README link to each provider's rules instead of restating them.
+
 ## 1.2.5 (Claude) - 2026-11-20
 
 - Removed `assets/logo.svg`; Anthropic's directory accepts an SVG only as the plugin's icon. `assets/logo.png` is the same image and stays the icon for Claude, the MCP Registry and the README. Cursor is unchanged (it uses `assets/icon.png`).
