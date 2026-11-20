@@ -1,7 +1,7 @@
 {
   "name": "tolstoy",
   "displayName": "Tolstoy",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Create images and videos from your store's products, manage your media library and read store analytics with Tolstoy. Once a brand connects them in Tolstoy, the Tolstoy Agent also reaches Instagram, Meta Ads, Pinterest, YouTube, OpenAI Ads (ChatGPT Ads), Gorgias, Triple Whale, Attentive, Yotpo, Judge.me, Okendo, Postscript, Rebuy, Nosto, Klevu, Bazaarvoice, Smile.io, Loop Returns, AfterShip, Feedonomics, Channable, Akeneo and Brandfolder.",
   "author": {
     "name": "Tolstoy",

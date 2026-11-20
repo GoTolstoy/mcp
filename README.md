@@ -88,7 +88,7 @@ This repository is also a Cursor plugin: [`.cursor-plugin/plugin.json`](./.curso
 - the Tolstoy workspace server (`https://apilb.gotolstoy.com/mcp/v1/mcp`, OAuth);
 - the `tolstoy-product-media` and `ecommerce-analytics` skills from [`skills/`](./skills/);
 - the `tolstoy-connectors` skill (platforms connected in Tolstoy) from [`cursor/skills/`](./cursor/skills/);
-- the always-on rule [`rules/use-tolstoy.mdc`](./rules/use-tolstoy.mdc), which sends requests for the brand's own data in a connected platform to Tolstoy, and leaves code that integrates with a platform alone;
+- the always-on rule [`rules/use-tolstoy.md`](./rules/use-tolstoy.md), which sends requests for the brand's own data in a connected platform to Tolstoy, and leaves code that integrates with a platform alone;
 - the agent [`cursor/agents/tolstoy-commerce-agent.md`](./cursor/agents/tolstoy-commerce-agent.md).
 
 To try it locally, link a clone of this repository to `~/.cursor/plugins/local/tolstoy` and reload Cursor. The Cursor-only skill and agent live under `cursor/` so the Claude plugin keeps its own two skills.
@@ -115,6 +115,20 @@ url = "https://apilb.gotolstoy.com/mcp/v1/mcp"
 ```bash
 codex mcp login tolstoy
 ```
+
+### Which files each client reads
+
+One repository serves every client, and each one reads only its own files:
+
+| Client | Reads |
+| --- | --- |
+| Claude plugin | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, `README.md`, `LICENSE`, `assets/` |
+| Cursor plugin | `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`, `cursor/`, `rules/`, `assets/icon.png` |
+| MCP Registry | `registry/*.server.json`, published by `.github/workflows/publish-mcp-registry.yml` |
+| Glama | `glama.json` |
+| Cline | `llms-install.md` |
+
+The Claude plugin is the repository root, so Anthropic's directory checks every file in the repository. Add files only of the types the repository already has: Markdown, JSON, the workflow YAML, PNG and SVG. Cursor rules are `.md` files with frontmatter, not `.mdc`. Cursor-only skills and agents stay under `cursor/`, because Claude Code loads `skills/` and `agents/` at the root.
 
 ## Authentication
 
