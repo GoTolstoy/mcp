@@ -30,7 +30,8 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
 
 ## Structure decisions
 
-- **The Claude plugin is the repository root.** That was set when the plugin was submitted, and changing it means a new submission. The directory checks every file in the repository, so any file you add must meet the Claude directory rules above, even if only Cursor or a registry uses it.
+- **The Claude plugin is the repository root.** That was set when the plugin was submitted, and changing it means a new submission.
+- **Every file in the repository is part of the Claude plugin.** A file added for Cursor, a registry or a store is still checked by the Claude directory. Before adding or renaming a file, check its type, its size, and how other files mention it against the [layout](https://claude.com/docs/plugins/pre-submission-checklist#repository-and-folder-layout) and [plugin folder files](https://claude.com/docs/plugins/pre-submission-checklist#files-in-the-plugin-folder) sections of the checklist, and against the latest portal finding. This applies to Markdown too, including how docs refer to images. If a client needs a file the Claude directory won't accept, don't add it here. Raise it with the repository owner instead: the alternative is a Claude plugin in a subfolder, which needs a new Claude submission.
 - **One repository serves both plugins.** The Cursor and Claude submissions both point at `GoTolstoy/mcp`. Moving either one means a new store submission.
 - **`skills/` at the root is shared.** Claude Code loads `skills/` and `agents/` from the plugin root, and the Cursor manifest also lists `skills/`. Put a skill there only if both clients should ship it.
 - **Cursor-only files live under `cursor/`, `rules/` and `.cursor-plugin/`.** Cursor-only skills and agents go in `cursor/skills/` and `cursor/agents/`, never in a root `agents/` or `skills/`. Use a rule file format that both Cursor and the Claude directory accept.
@@ -39,7 +40,7 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
 ## Before merging
 
 1. Read the sources above for every client the change touches. Check that the change doesn't break any client in the table.
-2. Claude: run `claude plugin validate ./`, and check every tracked file against the directory's current rules.
+2. Claude: run `claude plugin validate ./`. It only checks that files are well-formed ([what it checks](https://claude.com/docs/plugins/pre-submission-checklist)), not the directory's file rules. List the files the change adds, renames or edits (`git diff --name-status origin/main`), and check each one against the checklist sections above and the latest portal finding.
 3. Cursor: validate the manifest against the schema, then check that every path in it exists:
    ```sh
    curl -fsSLo /tmp/cursor-plugin.schema.json https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json
