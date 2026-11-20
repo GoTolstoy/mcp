@@ -122,7 +122,7 @@ One repository serves every client, and each one reads only its own files:
 
 | Client | Reads |
 | --- | --- |
-| Claude plugin | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, `README.md`, `LICENSE`, `assets/` |
+| Claude plugin | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, `README.md`, `LICENSE`, and the icon its manifest names |
 | Cursor plugin | `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`, `cursor/`, `rules/`, and the logo its manifest names |
 | MCP Registry | `registry/*.server.json`, published by `.github/workflows/publish-mcp-registry.yml` |
 | Glama | `glama.json` |
