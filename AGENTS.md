@@ -44,7 +44,7 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
 ## Adding another store
 
 1. Read that store's docs above and find which files it needs, and where.
-2. Check every new file against the Claude directory rules, because it will sit inside the Claude plugin. Store templates often use file types the Claude directory refuses, so check before copying a template file as it is. For example, Cursor's own template uses an `.mdc` rule and an SVG logo.
+2. Check every new file against the Claude directory rules, because it will sit inside the Claude plugin. The rules also cover what text files contain: for example, the directory holds a version for review if a document names an image or font file path, or shows a download-and-run command. Describe files instead, and link to tools' install docs. Store templates often use file types the Claude directory refuses, so check before copying a template file as it is. For example, Cursor's own template uses an `.mdc` rule and an SVG logo.
 3. Check whether the new manifest is also read by a client that's already here. Cursor, for example, loads a root `plugin.json` in the Agent Plugins format as well as `.cursor-plugin/plugin.json`. If two clients would read the same path, test both before merging.
 4. Prefer packages the store builds from an upload, when it offers one, over committing new files.
 5. If a store needs a file the Claude directory won't accept, or needs to own the repository root, stop and raise it with the repository owner. The alternative layout gives each plugin its own subfolder, and that needs a new Claude submission.
@@ -53,14 +53,9 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
 ## Before merging
 
 1. Read the sources above for every client the change touches. Check that the change doesn't break any client in the table.
-2. Claude: run `claude plugin validate ./`. It only checks that files are well-formed ([what it checks](https://claude.com/docs/plugins/pre-submission-checklist)), not the directory's file rules. List the files the change adds, renames or edits (`git diff --name-status origin/main`), and check each one against the checklist sections above and the latest portal finding.
-3. Cursor: validate the manifest against the schema, then check that every path in it exists:
-   ```sh
-   curl -fsSLo /tmp/cursor-plugin.schema.json https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json
-   npx --yes --package ajv-cli@5 --package ajv-formats@3 ajv validate --spec=draft7 -s /tmp/cursor-plugin.schema.json -d .cursor-plugin/plugin.json -c ajv-formats
-   for p in $(jq -r '[.logo,.skills,.agents,.rules,.mcpServers]|flatten|.[]' .cursor-plugin/plugin.json); do test -e "$p" || echo "missing $p"; done
-   ```
-4. JSON: `jq empty .mcp.json mcp.json glama.json registry/*.json .claude-plugin/plugin.json .cursor-plugin/plugin.json`.
+2. Claude: run `claude plugin validate ./`. It only checks that files are well-formed ([what it checks](https://claude.com/docs/plugins/pre-submission-checklist)), not the directory's file rules. List the files the change adds, renames or edits (`git diff --name-status origin/main`), and check each one against the checklist sections above and the latest portal finding. For a bigger change, also run the portal's Validate, which reports blocking findings and policy holds without submitting anything.
+3. Cursor: validate `.cursor-plugin/plugin.json` against the [Cursor plugin schema](https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json) with a JSON Schema validator such as [ajv-cli](https://ajv.js.org/packages/ajv-cli.html) (draft-07, with formats). Then check that every path in the manifest exists.
+4. JSON: check that every `.json` file parses.
 5. Versions: raise `version` in `.claude-plugin/plugin.json` or `.cursor-plugin/plugin.json` only when that plugin's content changes, or when a provider needs a new version. Record the change in `CHANGELOG.md`; history belongs there and in pull requests, not in this file.
 6. After merging, check the latest Claude portal finding once it has scanned the new commit.
 
