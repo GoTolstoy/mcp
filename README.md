@@ -128,7 +128,7 @@ One repository serves every client, and each one reads only its own files:
 | Glama | `glama.json` |
 | Cline | `llms-install.md` |
 
-The Claude plugin is the repository root, so Anthropic's directory checks every file in the repository. Add files only of the types the repository already has: Markdown, JSON, the workflow YAML, PNG and SVG. Cursor rules are `.md` files with frontmatter, not `.mdc`. Cursor-only skills and agents stay under `cursor/`, because Claude Code loads `skills/` and `agents/` at the root.
+The Claude plugin is the repository root, so Anthropic's directory checks every file in the repository. Use only Markdown, text, JSON, YAML and PNG, JPEG, GIF, WebP or ICO files; no SVG. See [AGENTS.md](./AGENTS.md). Cursor rules are `.md` files with frontmatter, not `.mdc`. Cursor-only skills and agents stay under `cursor/`, because Claude Code loads `skills/` and `agents/` at the root.
 
 ## Authentication
 

@@ -16,7 +16,13 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
 
 ## Why the tree looks like this
 
-- **The Claude plugin is the repository root, so Anthropic's directory checks every file.** Its policy only accepts certain files from organizations that aren't Verified, and it doesn't publish the list. Earlier versions passed with only Markdown, JSON, workflow YAML, PNG, SVG and `LICENSE` in the tree. Version 1.2.3 was refused after the tree gained `cursor/`, `rules/`, `CHANGELOG.md`, `SECURITY.md` and `assets/icon.png`. Its only new file type was `.mdc`, so 1.2.4 renamed that file to `.md`. Don't add a new file type, a binary, or a file over 256 KiB. Never use `export-ignore` or `export-subst` in `.gitattributes`.
+- **The Claude plugin is the repository root, so Anthropic's directory checks every file.** For organizations that aren't Verified, the directory's policy refuses any file outside its allowed list:
+  - Allowed: Markdown, plain text, JSON, YAML, and PNG, JPEG, GIF, WebP or ICO images.
+  - Not allowed: files that start with `#!`, package-manager config files, `.claude/skills` folders, and any file in `.claude-plugin/` other than `plugin.json`.
+  - From the policy: "An `.svg` other than the plugin's icon isn't accepted: use a PNG." "A license, a readme, .gitignore, and the plugin's icon can stay." "If your repository needs other files, or holds other plugins, put the plugin in a subfolder and submit that folder."
+  - 1.2.3 was refused for `rules/use-tolstoy.mdc` and `assets/logo.svg`. 1.2.4 renamed the rule to `.md`, and 1.2.5 deleted the SVG. `assets/logo.png` is the same image as a PNG.
+  - Also keep each file under 256 KiB, and never use `export-ignore` or `export-subst` in `.gitattributes`.
+  - The directory also shows warnings that don't block a version. These include a download-and-run command in `.github/workflows/publish-mcp-registry.yml`, which it says "can be held or refused". Don't add more files like that.
 - **Cursor-only skills and agents live under `cursor/`.** Claude Code loads `skills/` and `agents/` at the root, so anything there ships in the Claude plugin too. `skills/` holds only the skills both clients share.
 - **Cursor rules are `.md` files with frontmatter (`description`, `alwaysApply`), not `.mdc`.** Cursor reads `.md`, `.mdc` and `.markdown` rules. Only `.md` is safe for the Claude check.
 - **One repository serves both plugins.** The Cursor submission and the Claude submission both point at `GoTolstoy/mcp` at the root. Moving either one means a new store submission.
@@ -31,7 +37,13 @@ The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in th
    npx --yes --package ajv-cli@5 --package ajv-formats@3 ajv validate --spec=draft7 -s /tmp/cursor-plugin.schema.json -d .cursor-plugin/plugin.json -c ajv-formats
    for p in $(jq -r '[.logo,.skills,.agents,.rules,.mcpServers]|flatten|.[]' .cursor-plugin/plugin.json); do test -e "$p" || echo "missing $p"; done
    ```
-4. File types: `git ls-files | sed -n 's/.*\.//p' | sort | uniq -c` should list only `json`, `md`, `png`, `svg` and `yml`.
+4. File types: every tracked file must be an allowed type, must not start with `#!`, and must be UTF-8 text or an image:
+   ```sh
+   git ls-files | while read -r f; do
+     case "$f" in LICENSE|.gitignore|*.md|*.txt|*.json|*.yml|*.yaml|*.png|*.jpg|*.jpeg|*.gif|*.webp|*.ico) ;; *) echo "not allowed: $f";; esac
+     [ "$(head -c2 "$f")" = '#!' ] && echo "shebang: $f"
+   done
+   ```
 5. JSON: `jq empty .mcp.json mcp.json glama.json registry/*.json .claude-plugin/plugin.json .cursor-plugin/plugin.json`.
 6. Keep `registry/*.server.json` names and paths unchanged unless the workflow changes too.
 

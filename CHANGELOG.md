@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.5 (Claude) - 2026-11-20
+
+- Removed `assets/logo.svg`; Anthropic's directory accepts an SVG only as the plugin's icon. `assets/logo.png` is the same image and stays the icon for Claude, the MCP Registry and the README. Cursor is unchanged (it uses `assets/icon.png`).
+- AGENTS.md now states the directory's file policy.
+
 ## 1.3.1 (Cursor) and 1.2.4 (Claude) - 2026-11-20
 
 - The Cursor rule is now `rules/use-tolstoy.md`, the `.md` form Cursor also reads, so the repository has no `.mdc` file. Its text is unchanged.
