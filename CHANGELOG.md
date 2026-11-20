@@ -1,12 +1,13 @@
 # Changelog
 
-## Unreleased - 2026-11-20
+## 1.2.6 (Claude) - 2026-11-20
 
 - AGENTS.md and README link to each provider's rules instead of restating them.
 - AGENTS.md: every file in the repository is part of the Claude plugin, so a file added for another client is checked against the Claude directory's file rules before merging.
 - README and CHANGELOG no longer write image paths in backticks, which the Claude directory flagged.
 - AGENTS.md: how to add another store without breaking the Claude or Cursor plugin, with links to OpenAI, Gemini CLI and Agent Plugins docs.
 - AGENTS.md, README and CHANGELOG no longer name image file paths or show download-and-run commands; the Claude directory holds a version for either. CLAUDE.md is removed, because the directory warns that it isn't loaded at the plugin root; AGENTS.md is the agent guide.
+- Claude 1.2.6, so the directory checks the docs fixes as a new version.
 
 ## 1.2.5 (Claude) - 2026-11-20
 
