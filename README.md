@@ -122,13 +122,13 @@ One repository serves every client, and each one reads only its own files:
 
 | Client | Reads |
 | --- | --- |
-| Claude plugin | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, `README.md`, `LICENSE`, `assets/` |
-| Cursor plugin | `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`, `cursor/`, `rules/`, `assets/icon.png` |
+| Claude plugin | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, `README.md`, `LICENSE`, and the icon its manifest names |
+| Cursor plugin | `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`, `cursor/`, `rules/`, and the logo its manifest names |
 | MCP Registry | `registry/*.server.json`, published by `.github/workflows/publish-mcp-registry.yml` |
 | Glama | `glama.json` |
 | Cline | `llms-install.md` |
 
-The Claude plugin is the repository root, so Anthropic's directory checks every file in the repository. Use only Markdown, text, JSON, YAML and PNG, JPEG, GIF, WebP or ICO files; no SVG. See [AGENTS.md](./AGENTS.md). Cursor rules are `.md` files with frontmatter, not `.mdc`. Cursor-only skills and agents stay under `cursor/`, because Claude Code loads `skills/` and `agents/` at the root.
+The Claude plugin is the repository root, so Anthropic's directory checks every file in the repository against its [file rules](https://claude.com/docs/plugins/pre-submission-checklist) and [policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy). Cursor-only skills and agents stay under `cursor/`, because Claude Code loads `skills/` and `agents/` at the root. See [AGENTS.md](./AGENTS.md) before changing the tree.
 
 ## Authentication
 

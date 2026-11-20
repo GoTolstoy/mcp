@@ -1,51 +1,63 @@
 # Instructions for agents working in this repository
 
-This public repository holds the Tolstoy MCP server listing for several clients at once. Claude, Cursor, the MCP Registry and other public stores read the default branch (`main`), so a merge goes live for all of them. Check every change against each client below before merging.
+This public repository holds the Tolstoy MCP listing for several clients at once. Claude, Cursor, the MCP Registry, Glama and other public directories read the default branch (`main`), so every merge goes live for all of them. A change must not break any of them.
+
+## Read the provider rules first
+
+Before you change the file tree or a manifest, read the current rules. Don't rely on a copy of them here or in the README.
+
+- Claude plugin directory:
+  - [Submit a plugin](https://claude.com/docs/plugins/submit)
+  - [Pre-submission checklist](https://claude.com/docs/plugins/pre-submission-checklist)
+  - [Plugins reference](https://code.claude.com/docs/en/plugins-reference)
+  - [Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy)
+  - The latest finding for this plugin in the Claude directory portal. It names the current allowed-file rule and anything it refused.
+- Cursor Marketplace: [Plugins reference](https://cursor.com/docs/reference/plugins) and the [plugin schema](https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json).
+- MCP Registry: [registry docs](https://registry.modelcontextprotocol.io/docs) and the [registry repository docs](https://github.com/modelcontextprotocol/registry/tree/main/docs).
+- Glama: [server listing](https://glama.ai/mcp/servers/GoTolstoy/mcp) and the [`glama.json` schema](https://glama.ai/mcp/schemas/server.json).
+- Possible future stores:
+  - OpenAI plugins for ChatGPT and Codex: [package](https://developers.openai.com/plugins/build/plugins) and [submit](https://developers.openai.com/plugins/deploy/submission).
+  - Gemini CLI extensions: [reference](https://geminicli.com/docs/extensions/reference/) and [release](https://geminicli.com/docs/extensions/releasing/).
+  - The [Agent Plugins](https://agent-plugins.org) standard.
 
 ## Which files each client reads
 
-| Client | Reads | Notes |
-| --- | --- | --- |
-| Claude plugin directory | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, plus every other file in the repository | The plugin folder is the repository root. That was set at submission and can't be changed without a new submission. |
-| Cursor Marketplace | `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`, `cursor/skills/`, `cursor/agents/`, `rules/`, `assets/icon.png` | Reviews the default branch. Paths are set in the manifest. |
-| MCP Registry | `registry/tolstoy.server.json`, `registry/closet.server.json` | Published manually by `.github/workflows/publish-mcp-registry.yml`. |
-| Glama | `glama.json` | |
-| Cline and other MCP directories | `README.md`, `llms-install.md`, `mcp.json` | |
+| Client | Reads |
+| --- | --- |
+| Claude plugin directory | `.claude-plugin/plugin.json`, `.mcp.json`, `skills/`, and the rest of the repository, because the plugin folder is the root |
+| Cursor Marketplace | `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`, `cursor/`, `rules/`, and the logo the manifest names |
+| MCP Registry | `registry/*.server.json`, published manually by `.github/workflows/publish-mcp-registry.yml` |
+| Glama | `glama.json` |
+| Cline and other MCP directories | `README.md`, `llms-install.md`, `mcp.json` |
 
 The MCP server itself is `https://apilb.gotolstoy.com/mcp/v1/mcp`. Nothing in this repository deploys it.
 
-## Why the tree looks like this
+## Structure decisions
 
-- **The Claude plugin is the repository root, so Anthropic's directory checks every file.** For organizations that aren't Verified, the directory's policy refuses any file outside its allowed list:
-  - Allowed: Markdown, plain text, JSON, YAML, and PNG, JPEG, GIF, WebP or ICO images.
-  - Not allowed: files that start with `#!`, package-manager config files, `.claude/skills` folders, and any file in `.claude-plugin/` other than `plugin.json`.
-  - From the policy: "An `.svg` other than the plugin's icon isn't accepted: use a PNG." "A license, a readme, .gitignore, and the plugin's icon can stay." "If your repository needs other files, or holds other plugins, put the plugin in a subfolder and submit that folder."
-  - 1.2.3 was refused for `rules/use-tolstoy.mdc` and `assets/logo.svg`. 1.2.4 renamed the rule to `.md`, and 1.2.5 deleted the SVG. `assets/logo.png` is the same image as a PNG.
-  - Also keep each file under 256 KiB, and never use `export-ignore` or `export-subst` in `.gitattributes`.
-  - The directory also shows warnings that don't block a version. These include a download-and-run command in `.github/workflows/publish-mcp-registry.yml`, which it says "can be held or refused". Don't add more files like that.
-- **Cursor-only skills and agents live under `cursor/`.** Claude Code loads `skills/` and `agents/` at the root, so anything there ships in the Claude plugin too. `skills/` holds only the skills both clients share.
-- **Cursor rules are `.md` files with frontmatter (`description`, `alwaysApply`), not `.mdc`.** Cursor reads `.md`, `.mdc` and `.markdown` rules. Only `.md` is safe for the Claude check.
-- **One repository serves both plugins.** The Cursor submission and the Claude submission both point at `GoTolstoy/mcp` at the root. Moving either one means a new store submission.
+- **The Claude plugin is the repository root.** That was set when the plugin was submitted, and changing it means a new submission.
+- **Every file in the repository is part of the Claude plugin.** A file added for Cursor, a registry or a store is still checked by the Claude directory. Before adding or renaming a file, check its type, its size, and how other files mention it against the [layout](https://claude.com/docs/plugins/pre-submission-checklist#repository-and-folder-layout) and [plugin folder files](https://claude.com/docs/plugins/pre-submission-checklist#files-in-the-plugin-folder) sections of the checklist, and against the latest portal finding. This applies to Markdown too, including how docs refer to images. If a client needs a file the Claude directory won't accept, don't add it here. Raise it with the repository owner instead: the alternative is a Claude plugin in a subfolder, which needs a new Claude submission.
+- **One repository serves both plugins.** The Cursor and Claude submissions both point at `GoTolstoy/mcp`. Moving either one means a new store submission.
+- **`skills/` at the root is shared.** Claude Code loads `skills/` and `agents/` from the plugin root, and the Cursor manifest also lists `skills/`. Put a skill there only if both clients should ship it.
+- **Cursor-only files live under `cursor/`, `rules/` and `.cursor-plugin/`.** Cursor-only skills and agents go in `cursor/skills/` and `cursor/agents/`, never in a root `agents/` or `skills/`. Use a rule file format that both Cursor and the Claude directory accept.
+- **Registry manifests stay at `registry/*.server.json`.** The publish workflow reads those paths.
+
+## Adding another store
+
+1. Read that store's docs above and find which files it needs, and where.
+2. Check every new file against the Claude directory rules, because it will sit inside the Claude plugin. The rules also cover what text files contain: for example, the directory holds a version for review if a document names an image or font file path, or shows a download-and-run command. Describe files instead, and link to tools' install docs. Store templates often use file types the Claude directory refuses, so check before copying a template file as it is. For example, Cursor's own template uses an `.mdc` rule and an SVG logo.
+3. Check whether the new manifest is also read by a client that's already here. Cursor, for example, loads a root `plugin.json` in the Agent Plugins format as well as `.cursor-plugin/plugin.json`. If two clients would read the same path, test both before merging.
+4. Prefer packages the store builds from an upload, when it offers one, over committing new files.
+5. If a store needs a file the Claude directory won't accept, or needs to own the repository root, stop and raise it with the repository owner. The alternative layout gives each plugin its own subfolder, and that needs a new Claude submission.
+6. Add the store to the table above.
 
 ## Before merging
 
-1. Raise `version` in `.claude-plugin/plugin.json` when a change to skills, `.mcp.json` or the manifest should reach Claude users. The directory's refusal notice asks for a new version before it rechecks. Raise `version` in `.cursor-plugin/plugin.json` when Cursor files change. Add a `CHANGELOG.md` entry.
-2. Claude: `claude plugin validate ./`. Warnings for `icon`, `documentationUrl`, `supportUrl`, `privacyPolicyUrl` and `termsOfServiceUrl` are expected on older CLI versions; the directory reads these fields, so keep them.
-3. Cursor: validate against the schema, then check that every manifest path exists:
-   ```sh
-   curl -fsSLo /tmp/cursor-plugin.schema.json https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json
-   npx --yes --package ajv-cli@5 --package ajv-formats@3 ajv validate --spec=draft7 -s /tmp/cursor-plugin.schema.json -d .cursor-plugin/plugin.json -c ajv-formats
-   for p in $(jq -r '[.logo,.skills,.agents,.rules,.mcpServers]|flatten|.[]' .cursor-plugin/plugin.json); do test -e "$p" || echo "missing $p"; done
-   ```
-4. File types: every tracked file must be an allowed type, must not start with `#!`, and must be UTF-8 text or an image:
-   ```sh
-   git ls-files | while read -r f; do
-     case "$f" in LICENSE|.gitignore|*.md|*.txt|*.json|*.yml|*.yaml|*.png|*.jpg|*.jpeg|*.gif|*.webp|*.ico) ;; *) echo "not allowed: $f";; esac
-     [ "$(head -c2 "$f")" = '#!' ] && echo "shebang: $f"
-   done
-   ```
-5. JSON: `jq empty .mcp.json mcp.json glama.json registry/*.json .claude-plugin/plugin.json .cursor-plugin/plugin.json`.
-6. Keep `registry/*.server.json` names and paths unchanged unless the workflow changes too.
+1. Read the sources above for every client the change touches. Check that the change doesn't break any client in the table.
+2. Claude: run `claude plugin validate ./`. It only checks that files are well-formed ([what it checks](https://claude.com/docs/plugins/pre-submission-checklist)), not the directory's file rules. List the files the change adds, renames or edits (`git diff --name-status origin/main`), and check each one against the checklist sections above and the latest portal finding. For a bigger change, also run the portal's Validate, which reports blocking findings and policy holds without submitting anything.
+3. Cursor: validate `.cursor-plugin/plugin.json` against the [Cursor plugin schema](https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json) with a JSON Schema validator such as [ajv-cli](https://ajv.js.org/packages/ajv-cli.html) (draft-07, with formats). Then check that every path in the manifest exists.
+4. JSON: check that every `.json` file parses.
+5. Versions: raise `version` in `.claude-plugin/plugin.json` or `.cursor-plugin/plugin.json` only when that plugin's content changes, or when a provider needs a new version. Record the change in `CHANGELOG.md`; history belongs there and in pull requests, not in this file.
+6. After merging, check the latest Claude portal finding once it has scanned the new commit.
 
 ## Wording
 
